@@ -7,8 +7,8 @@
 			"request": "launch",
 			"args": [
 				"--extensionDevelopmentPath=${workspaceFolder}",
-				"--enable-proposed-api", "deltaxml.xpath-notebook",
-				"${workspaceFolder}/samplenotebooks"
+				"--enable-proposed-api",
+				"deltaxml.xpath-notebook"
 			],
 			"outFiles": [
 				"${workspaceFolder}/out/**/*.js"
