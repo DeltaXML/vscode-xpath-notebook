@@ -59,7 +59,7 @@
         }
     ],
     "scripts": {
-        "vscode:prepublish": "npm run compile",
+        "vscode:prepublish": "npm run compile && npm run compile-xsl",
         "compile": "tsc -p ./",
         "compile-xsl": "npx xslt3 -t -xsl:resources/xslt/xpath-eval-to-json.xsl -export:resources/xslt-sef/xpath-eval-to-json.sef.json -nogo",
         "lint": "tslint -p ./",
