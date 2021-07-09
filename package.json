@@ -1,10 +1,10 @@
 {
-    "name": "xslt-xpath",
+	"name": "xpath-notebook",
     "displayName": "XPath 3.1 Notebook for Visual Studio Code",
     "description": "Notebook for XPath 3.1",
     "version": "0.0.1",
     "publisher": "deltaxml",
-    "icon": "xslt-xpath.png",
+    "icon": "xpath-notebook.png",
     "enableProposedApi": true,
     "bugs": {
         "url": "https://github.com/DeltaXML/vscode-xpath-notebook/issues"
@@ -40,6 +40,7 @@
     "contributes": {
         "notebooks": [
             {
+                "id": "xbook",
                 "type": "xbook",
                 "displayName": "XBook",
                 "selector": [
@@ -68,14 +69,14 @@
         "@types/jest": "^24.9.1",
         "@types/node": "^10.17.17",
         "@types/vscode": "^1.44.0",
+        "@types/vscode-notebook-renderer": "^1.48.0",
         "jest": "^26.6.3",
         "ts-jest": "^26.5.6",
         "tslint": "^5.20.1",
-        "typescript": "^3.8.3",
-        "xslt3": "^2.0.3"
+        "typescript": "^3.8.3"
     },
     "dependencies": {
         "jsonc-parser": "^3.0.0",
-        "xslt3": "^2.0.3"
+        "saxon-js": "^2.0.3"
     }
 }
