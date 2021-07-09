@@ -12,13 +12,14 @@
   <xsl:output method="text" indent="yes"/>
   <xsl:mode on-no-match="shallow-copy"/>
   
+  <xsl:param name="eval-result" as="item()*"/>
+  
   <xsl:variable name="test1" select="'uno', 'dos','tres', true(), 24, ()"/>
   <xsl:variable name="test2" select="map {'abc': 'gloucester', 'def': (), 'deep': map { 'lvl2': 22 } }"/>
   <xsl:variable name="test3" select="[ 'spurs', 'bristol city', (), 'man united', array { 5,10,15 } ]"/>
-  
-  <xsl:template match="/" mode="#all">
-    <xsl:variable name="jsonString" as="xs:string" select="unparsed-text('data.json')"/>
-    <xsl:variable name="jsonXML" select="ext:convertArrayEntry($test2)"/>
+    
+  <xsl:template name="main">
+    <xsl:variable name="jsonXML" select="ext:convertArrayEntry($eval-result)"/>
     <!-- <xsl:variable name="expression" as="xs:string" select="'''hello world'''"/>
     <xsl:evaluate xpath="$expression"/> -->
     <xsl:sequence select="xml-to-json($jsonXML)"/>

@@ -4,6 +4,9 @@ import * as path from 'path';
 export class ExtensionData {
 	static extensionPath: string = '';
 	static lastEditorUri: string | undefined;
+	static getSefPath() {
+		return path.join(ExtensionData.extensionPath, 'resources', 'xslt-sef', 'xpath-eval-to-json.sef.json' );
+	}
 	private static baseUri: string|undefined;
 
 	static calcBaseUri(uri: vscode.Uri) {
