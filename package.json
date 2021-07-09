@@ -61,6 +61,7 @@
     "scripts": {
         "vscode:prepublish": "npm run compile",
         "compile": "tsc -p ./",
+        "compile-xsl": "npx xslt3 -t -xsl:resources/xslt/xpath-eval-to-json.xsl -export:resources/xslt-sef/xpath-eval-to-json.sef.json -nogo",
         "lint": "tslint -p ./",
         "watch": "tsc -watch -p ./",
         "test": "jest"
@@ -73,7 +74,8 @@
         "jest": "^26.6.3",
         "ts-jest": "^26.5.6",
         "tslint": "^5.20.1",
-        "typescript": "^3.8.3"
+        "typescript": "^3.8.3",
+        "xslt3": "^2.2.0"
     },
     "dependencies": {
         "jsonc-parser": "^3.0.0",
