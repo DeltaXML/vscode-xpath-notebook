@@ -1,5 +1,5 @@
 {
-	"name": "xpath-notebook",
+    "name": "xpath-notebook",
     "displayName": "XPath 3.1 Notebook for Visual Studio Code",
     "description": "Notebook for XPath 3.1",
     "version": "0.0.1",
