@@ -7,6 +7,9 @@ export function activate(context: vscode.ExtensionContext) {
 	ExtensionData.extensionPath = context.extensionPath;
 
   context.subscriptions.push(
+		vscode.window.onDidChangeActiveTextEditor(editor => {
+			ExtensionData.registerEditor(editor);
+		}),
     vscode.workspace.registerNotebookSerializer('xbook', new XBookSerializer()),
     new XBookController()
   );

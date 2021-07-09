@@ -12,16 +12,20 @@
   <xsl:output method="text" indent="yes"/>
   <xsl:mode on-no-match="shallow-copy"/>
   
-  <xsl:param name="eval-result" as="item()*"/>
+  <xsl:param name="eval-result" as="item()*" select="()"/>
   
   <xsl:variable name="test1" select="'uno', 'dos','tres', true(), 24, ()"/>
   <xsl:variable name="test2" select="map {'abc': 'gloucester', 'def': (), 'deep': map { 'lvl2': 22 } }"/>
   <xsl:variable name="test3" select="[ 'spurs', 'bristol city', (), 'man united', array { 5,10,15 } ]"/>
-    
+  <xsl:variable name="test4" select="/*/*"/>
+  
   <xsl:template name="main">
     <xsl:variable name="jsonXML" select="ext:convertArrayEntry($eval-result)"/>
-    <!-- <xsl:variable name="expression" as="xs:string" select="'''hello world'''"/>
-    <xsl:evaluate xpath="$expression"/> -->
+    <xsl:sequence select="xml-to-json($jsonXML)"/>
+  </xsl:template>
+  
+  <xsl:template name="test">
+    <xsl:variable name="jsonXML" select="ext:convertArrayEntry($test4)"/>
     <xsl:sequence select="xml-to-json($jsonXML)"/>
   </xsl:template>
   
@@ -73,6 +77,16 @@
       </xsl:otherwise>
     </xsl:choose>
   </xsl:function>
+  
+  <xsl:template match=".[. instance of node()]" mode="#default">
+    <xsl:param name="key" as="xs:string?"/>
+    <string>
+      <xsl:if test="$key">
+        <xsl:attribute name="key" select="$key"/>
+      </xsl:if>
+      <xsl:sequence select="path()"/>
+    </string>
+  </xsl:template>
   
   <xsl:template match=".[. instance of map(*)]" mode="#default">
     <xsl:param name="key" as="xs:string?"/>

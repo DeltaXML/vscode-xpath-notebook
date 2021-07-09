@@ -128,13 +128,14 @@ export class NodeKernel {
 				data += "try {\n"
                 data += "prevResult = SaxonJS.XPath.evaluate(\`" + cellText + "\`, context, options);\n";
 								data += `
-								SaxonJS.transform({
+								let resultTransform = SaxonJS.transform({
 									stylesheetLocation: "${ExtensionData.getSefPath()}",
 									initialTemplate: "main",
 									stylesheetParams: {
 										 "eval-result": prevResult, 
 									}
 							 });
+							 prevResult = '' + resultTransform.principalResult;
 `
                 data += `
 console.log(prevResult);

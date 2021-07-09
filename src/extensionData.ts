@@ -20,6 +20,16 @@ export class ExtensionData {
 		ExtensionData.baseUri = result;
 	}
 
+	static registerEditor(editor: vscode.TextEditor | undefined) {
+		const nbScheme = 'vscode-notebook-cell';
+		if (editor) {
+			if (editor.document.uri.scheme !== nbScheme) {
+				ExtensionData.lastEditorUri = editor.document.uri.toString();
+				ExtensionData.setBaseUri(editor.document.uri);
+			}
+		}
+	}
+
 	static getBaseUri() {
 		if (this.baseUri) {
 			return this.baseUri;
