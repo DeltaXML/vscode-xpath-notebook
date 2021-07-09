@@ -116,7 +116,10 @@ export class NodeKernel {
 					contextScript = `
 					var context = SaxonJS.XPath.evaluate('()');
 					var options = {
-						staticBaseURI: '${ExtensionData.calcBaseUri(cellUri)}' 
+						staticBaseURI: '${ExtensionData.calcBaseUri(cellUri)}',
+						params: {
+							'_': prevResult
+						}
 					};
 					`;
 				}
