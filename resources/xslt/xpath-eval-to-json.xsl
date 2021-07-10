@@ -13,6 +13,9 @@
   <xsl:mode on-no-match="shallow-copy"/>
   
   <xsl:param name="eval-result" as="item()*" select="()"/>
+  <xsl:param name="expression" as="xs:string"/>
+  <xsl:param name="sourceURI" as="xs:string?"/>
+  <xsl:variable name="sourceDoc" as="node()?" select="if ($sourceURI) then doc($sourceURI) else ()"/>
   
   <xsl:variable name="test1" select="map { 'values': ['uno', 'dos','tres', true(), (), 24] }"/>
   <xsl:variable name="test2" select="map {'abc': 'gloucester', 'def': (), 'deep': map { 'lvl2': 22 } }"/>
@@ -20,7 +23,8 @@
   <xsl:variable name="test4" select="/*/*"/>
   
   <xsl:template name="main">
-    <xsl:variable name="jsonXML" select="ext:convertArrayEntry($eval-result)"/>
+    <xsl:variable name="result" as="item()*" select="ext:evaluate($sourceDoc)"/>
+    <xsl:variable name="jsonXML" select="ext:convertArrayEntry($result)"/>
     <xsl:sequence select="xml-to-json($jsonXML)"/>
   </xsl:template>
   
@@ -33,6 +37,29 @@
     <xsl:variable name="jsonXML" select="ext:convertArrayEntry($test1)"/>
     <xsl:sequence select="xml-to-json($jsonXML)"/>
   </xsl:template>
+  
+  <xsl:function name="ext:evaluate" as="item()*">
+    <xsl:param name="doc" as="node()?"/>
+    <xsl:choose>
+      <xsl:when test="$doc">
+        <xsl:evaluate 
+          xpath="$expression"
+          context-item="$doc"
+          namespace-context="$doc"
+          >
+          
+        </xsl:evaluate>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:evaluate 
+          xpath="$expression"
+          context-item="$doc"
+          >
+          
+        </xsl:evaluate>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:function>
   
   <xsl:function name="ext:convertMapEntry">
     <xsl:param name="key" as="xs:string?"/>

@@ -132,7 +132,8 @@ export class NodeKernel {
 									stylesheetLocation: "${ExtensionData.getSefPath()}",
 									initialTemplate: "main",
 									stylesheetParams: {
-										 "eval-result": prevResult, 
+										"sourceURI": "${ExtensionData.lastEditorUri}",
+										"expression": "${cellText}"
 									}
 							 });
 							 prevResult = '' + resultTransform.principalResult;
