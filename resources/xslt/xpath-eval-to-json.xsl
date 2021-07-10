@@ -16,6 +16,8 @@
   <xsl:param name="expression" as="xs:string"/>
   <xsl:param name="sourceURI" as="xs:string?"/>
   <xsl:variable name="sourceDoc" as="node()?" select="if ($sourceURI) then doc($sourceURI) else ()"/>
+  <xsl:variable name="xmlnsMap" as="map(*)" 
+    select="if ($sourceDoc) then ext:getURItoPrefixMap($sourceDoc/*) else ()"/>
   
   <xsl:variable name="test1" select="map { 'values': ['uno', 'dos','tres', true(), (), 24] }"/>
   <xsl:variable name="test2" select="map {'abc': 'gloucester', 'def': (), 'deep': map { 'lvl2': 22 } }"/>
@@ -34,7 +36,7 @@
   </xsl:template>
   
   <xsl:template name="test">
-    <xsl:variable name="jsonXML" select="ext:convertArrayEntry($test1)"/>
+    <xsl:variable name="jsonXML" select="ext:convertArrayEntry($test4)"/>
     <xsl:sequence select="xml-to-json($jsonXML)"/>
   </xsl:template>
   
@@ -61,15 +63,36 @@
     </xsl:choose>
   </xsl:function>
   
-  <xsl:function name="ext:defaultNamespace" as="xs:string">
+  <xsl:function name="ext:getURItoPrefixMap" as="map(*)">
+    <xsl:param name="source" as="node()"/>
+    <xsl:sequence 
+      select="
+        map:merge(
+          for $pfx in in-scope-prefixes($source),
+            $ns in namespace-uri-for-prefix($pfx, $source)
+          return 
+            map:entry($ns, $pfx)
+        )"/>
+  </xsl:function>
+  
+  <xsl:variable name="regex" as="xs:string" select="'Q\{[^\{]*\}'"/>
+  
+  <xsl:function name="ext:tidyXPath" as="xs:string*">
     <xsl:param name="node" as="node()"/>
-    <xsl:sequence select="
-      for $pfx in in-scope-prefixes($node),
-        $ns in namespace-uri-for-prefix($pfx, $node)
-      return 
-        if ($pfx => string-length() eq 0) then
-          $ns
-        else ()"/>
+    <xsl:variable name="parts" as="xs:string*">
+      <xsl:analyze-string select="path($node)" regex="{$regex}">
+        <xsl:matching-substring>
+          <xsl:variable name="uri" as="xs:string" select="substring(., 3, string-length(.) - 3)"/>
+          <xsl:variable name="pfx" select="map:get($xmlnsMap, $uri)"/>
+          <xsl:sequence select="if (string-length($pfx) eq 0) then '' else $pfx || ':'"/>
+        </xsl:matching-substring>
+        <xsl:non-matching-substring>
+          <xsl:message select="'non-matching', ."/> 
+          <xsl:sequence select="."/>
+        </xsl:non-matching-substring>
+      </xsl:analyze-string>
+    </xsl:variable>
+    <xsl:sequence select="string-join($parts)"/>
   </xsl:function>
   
   <xsl:function name="ext:convertMapEntry">
@@ -101,10 +124,6 @@
   
   <xsl:function name="ext:convertArrayEntry">
     <xsl:param name="value" as="item()*"/>
-    <xsl:message expand-text="yes">
-      ==== Watch Variables ====
-      value:     {$value}
-    </xsl:message>
     <xsl:choose>
       <xsl:when test="count($value) gt 1">
         <array>
@@ -130,7 +149,7 @@
       <xsl:if test="$key">
         <xsl:attribute name="key" select="$key"/>
       </xsl:if>
-      <xsl:sequence select="path()"/>
+      <xsl:sequence select="ext:tidyXPath(.)"/>
     </string>
   </xsl:template>
   
