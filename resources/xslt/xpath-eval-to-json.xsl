@@ -14,7 +14,7 @@
   
   <xsl:param name="eval-result" as="item()*" select="()"/>
   
-  <xsl:variable name="test1" select="'uno', 'dos','tres', true(), 24, ()"/>
+  <xsl:variable name="test1" select="map { 'values': ['uno', 'dos','tres', true(), (), 24] }"/>
   <xsl:variable name="test2" select="map {'abc': 'gloucester', 'def': (), 'deep': map { 'lvl2': 22 } }"/>
   <xsl:variable name="test3" select="[ 'spurs', 'bristol city', (), 'man united', array { 5,10,15 } ]"/>
   <xsl:variable name="test4" select="/*/*"/>
@@ -24,8 +24,13 @@
     <xsl:sequence select="xml-to-json($jsonXML)"/>
   </xsl:template>
   
+  <xsl:template name="converted">
+    <xsl:variable name="jsonXML" select="ext:convertArrayEntry($eval-result)"/>
+    <xsl:sequence select="$jsonXML"/>
+  </xsl:template>
+  
   <xsl:template name="test">
-    <xsl:variable name="jsonXML" select="ext:convertArrayEntry($test4)"/>
+    <xsl:variable name="jsonXML" select="ext:convertArrayEntry($test1)"/>
     <xsl:sequence select="xml-to-json($jsonXML)"/>
   </xsl:template>
   
@@ -43,7 +48,7 @@
           </xsl:for-each>
         </array>
       </xsl:when>
-      <xsl:when test="count($value) eq 1">
+      <xsl:when test="exists($value)">
         <xsl:for-each select="$value">
           <xsl:apply-templates select=".">
             <xsl:with-param name="key" select="$key"/>
@@ -58,7 +63,10 @@
   
   <xsl:function name="ext:convertArrayEntry">
     <xsl:param name="value" as="item()*"/>
-    
+    <xsl:message expand-text="yes">
+      ==== Watch Variables ====
+      value:     {$value}
+    </xsl:message>
     <xsl:choose>
       <xsl:when test="count($value) gt 1">
         <array>
@@ -67,7 +75,7 @@
           </xsl:for-each>
         </array>
       </xsl:when>
-      <xsl:when test="count($value) eq 1">
+      <xsl:when test="exists($value)">
         <xsl:for-each select="$value">
           <xsl:apply-templates select="."/>
         </xsl:for-each>
@@ -117,9 +125,7 @@
           then 'number'
         else if (. instance of xs:boolean)
           then 'boolean'
-        else if (. instance of xs:string)
-          then 'string'
-        else 'unexpected'
+        else 'string'
       "/>
     
     <xsl:element name="{$jsonTypeName}">
