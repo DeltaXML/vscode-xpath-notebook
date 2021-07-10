@@ -45,7 +45,7 @@
         <xsl:evaluate 
           xpath="$expression"
           context-item="$doc"
-          namespace-context="$doc"
+          namespace-context="$doc/*"
           >
           
         </xsl:evaluate>
@@ -59,6 +59,17 @@
         </xsl:evaluate>
       </xsl:otherwise>
     </xsl:choose>
+  </xsl:function>
+  
+  <xsl:function name="ext:defaultNamespace" as="xs:string">
+    <xsl:param name="node" as="node()"/>
+    <xsl:sequence select="
+      for $pfx in in-scope-prefixes($node),
+        $ns in namespace-uri-for-prefix($pfx, $node)
+      return 
+        if ($pfx => string-length() eq 0) then
+          $ns
+        else ()"/>
   </xsl:function>
   
   <xsl:function name="ext:convertMapEntry">
