@@ -187,9 +187,6 @@ console.log(error);
 			const escapedSlashPath = '"' + joinedPath.replace(/(\\)/g, '\\$1') + '"';
 
 			let script = `
-				let deQuote = function(text) {
-					return text.substring(1, text.length - 1);
-				}
 				const SaxonJS = require(${escapedSlashPath});
 				let prevResult = [];
 				`;
