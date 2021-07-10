@@ -144,6 +144,7 @@ export class NodeKernel {
 console.log(prevResult);
 				`
 				data += `} catch(error) {
+console.log('Errx:');
 console.log(error);
 }					`;
                 //data += "SaxonJS.serialize(result);";
@@ -181,11 +182,9 @@ console.log(error);
 				this.tmpDirectory = fs.mkdtempSync(PATH.join(os.tmpdir(), 'xpath-notebook-'));
 			}
 			const saxonLoaderPath = `${this.tmpDirectory}/saxonLoader.js`;
-			const nl = "'\\n'";
 			const escapedSpacePath = ExtensionData.extensionPath;
 			const joinedPath = PATH.join(escapedSpacePath, "node_modules", "saxon-js");
 			const escapedSlashPath = '"' + joinedPath.replace(/(\\)/g, '\\$1') + '"';
-
 
 			let script = `
 				let deQuote = function(text) {
@@ -194,92 +193,6 @@ console.log(error);
 				const SaxonJS = require(${escapedSlashPath});
 				let prevResult = [];
 				`;
-			script += `
-				let process = function(result, parts, level) {
-					const pad = ${nl} + (' '.repeat(level * 2));
-					const pad2 = ' '.repeat((level + 1) * 2);
-					const pad3 = ${nl} + (' '.repeat((level + 1) * 2));
-					const pad4 =  ' '.repeat(level * 2);
-					// const pad = '';
-					// const pad2 = '';
-					// const pad3 = '';
-					// const pad4 = '';
-				
-					if (typeof result === 'object')
-					{
-						if (Array.isArray(result)) {
-							const len = result.length;
-							if (level === 0) {
-								// parts.push('-- ' + len + ' results --' + ${nl})
-							}
-							const onNewLines = true; // len > 3;
-							parts.push('[');
-							result.forEach((item, index) => {
-								if (onNewLines) {
-									parts.push(pad3);
-								}
-								process(item, parts, level + 1);
-								if (index + 1 < len) {
-									parts.push(', ');
-								}      
-							});
-							if (onNewLines) {
-								parts.push(pad + ']');
-							} else {
-								parts.push(pad4, ']');
-							}
-						} else if (result === null) {
-							parts.push('[]');
-						} else if (result.constructor.name.includes('xmldom')) {
-							let path = pad + convertPath(SaxonJS.XPath.evaluate('path(.)', result));
-							path = path.trim();
-							const sValue = SaxonJS.XPath.evaluate('string(.)', result);
-							parts.push('"\u1680' + deQuote(JSON.stringify(path)) + ' ' + deQuote(JSON.stringify(sValue)) + '"');
-						} else if (result.qname && result.value) {
-							let path = pad + convertPath(SaxonJS.XPath.evaluate('path(.)', result));
-							path = path.trim();
-							const sValue = result.value;
-							parts.push('"\u1680' + deQuote(JSON.stringify(path)) + ' ' + deQuote(JSON.stringify(sValue)) + '"');
-						} else {
-							parts.push('\{');
-							const entries = Object.entries(result);
-							const len = entries.length;
-							const onNewLines = true; // len > 3;
-							entries.forEach((entry, index) => {
-								const [key, value] = entry;
-								if (onNewLines) {
-									parts.push(pad3);
-								}
-								const sKey = key.value? key.value : key;
-								parts.push(JSON.stringify(sKey) + ': ');
-								process(value, parts, level + 1);
-								if (index + 1 < len) {
-									parts.push(',');
-								}
-							})
-							if (onNewLines) {
-								parts.push(pad + '\}');
-							} else {
-								parts.push(pad4, '\}');
-							}
-						}
-					} 
-					else {
-						return parts.push(JSON.stringify(result));
-						;
-					}
-				};
-				
-				let writeResult = function(result) {
-					const parts = [];
-					const level = 0;
-					process(result, parts, level);
-					console.log(parts.join(''));
-				}
-`
-
-			// console.log('script:');
-			// console.log(script);
 			fs.writeFileSync(saxonLoaderPath, script);
 			return saxonLoaderPath;
 		} catch (e) {
