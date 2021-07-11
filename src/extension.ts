@@ -2,11 +2,13 @@ import * as vscode from 'vscode';
 import { ExtensionData } from './extensionData';
 import { XBookController } from './xbookController';
 import { XBookSerializer } from './xbookSerializer';
+import { XpathResultTokenProvider } from './xpathResultTokenProvider';
 
 export function activate(context: vscode.ExtensionContext) {
 	ExtensionData.extensionPath = context.extensionPath;
 
   context.subscriptions.push(
+		vscode.languages.registerDocumentSemanticTokensProvider({ language: 'json' }, new XpathResultTokenProvider(), XpathResultTokenProvider.getLegend()),
 		vscode.window.onDidChangeActiveTextEditor(editor => {
 			ExtensionData.registerEditor(editor);
 		}),
