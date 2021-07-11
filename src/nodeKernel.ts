@@ -101,7 +101,7 @@ export class NodeKernel {
 							invDocXmlns[value] = name;
 						});
 					} catch(error) {
-						throw new Error('Error: No XML document is set as the context');
+						throw new Error('Notebook Error: Most recent editor should host a valid XML file:\\n${ExtensionData.lastEditorUri}');
 					}
 					`;
 					contextScript += `
@@ -155,8 +155,9 @@ export class NodeKernel {
 console.log(prevResult);
 				`
 				data += `} catch(error) {
-console.log('Errx:');
-console.log(error);
+					console.error(error.toString());
+// console.log('Errx:');
+// console.log(error);
 }					`;
 				//data += "SaxonJS.serialize(result);";
 				console.log(data);
