@@ -55,7 +55,7 @@ export class XBookController {
       if (isSuccess) {
         execution.replaceOutput([
         new vscode.NotebookCellOutput([
-          vscode.NotebookCellOutputItem.text(result, 'application/json')
+          vscode.NotebookCellOutputItem.text(result, 'text/x-javascript')
         ])
       ]);
       } else {

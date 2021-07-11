@@ -35,6 +35,9 @@
         },
         "[json]": {
             "editor.semanticHighlighting.enabled": true
+        },
+        "[javascript]": {
+            "editor.semanticHighlighting.enabled": true
         }
     },
     "contributes": {
