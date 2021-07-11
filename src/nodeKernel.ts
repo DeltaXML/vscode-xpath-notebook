@@ -155,9 +155,7 @@ export class NodeKernel {
 console.log(prevResult);
 				`
 				data += `} catch(error) {
-					console.error(error.toString());
-// console.log('Errx:');
-// console.log(error);
+					throw new Error(error.toString());
 }					`;
 				//data += "SaxonJS.serialize(result);";
 				console.log(data);
