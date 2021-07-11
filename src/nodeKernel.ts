@@ -8,53 +8,71 @@ import { ExtensionData } from './extensionData';
 
 export class NodeKernel {
 
-    private nodeRuntime: cp.ChildProcess | undefined;
+	private nodeRuntime: cp.ChildProcess | undefined;
 	private outputBuffer = '';	// collect output here
-    private tmpDirectory?: string;
+	private hasRuntimeError = false;
+	private tmpDirectory?: string;
 
-    public async start() {
+	public async start() {
 		if (!this.nodeRuntime) {
 
 			this.nodeRuntime = cp.spawn('node', [
 				`-e`, `require('repl').start({ prompt: '', ignoreUndefined: true })`
 			]);
+
 			this.runSaxonLoader();
 			if (this.nodeRuntime.stdout) {
 				this.nodeRuntime.stdout.on('data', (data: Buffer) => {
-					this.outputBuffer += data.toString();
+					const dataStr = data.toString();
+					if (dataStr.startsWith('Uncaught Error:')) {
+						this.hasRuntimeError = true;
+						this.outputBuffer += dataStr.substring(15);
+					} else {
+						this.outputBuffer += dataStr;
+					}
 				});
 			}
+
 			if (this.nodeRuntime.stderr) {
-				this.nodeRuntime.stderr.on('data', data => {
+				this.nodeRuntime.stderr.on('error', (data: Buffer) => {
+					this.hasRuntimeError = true;
+					this.outputBuffer += data.toString();
 					console.log(`stderr: ${data}`);
 				});
 			}
 		}
 	}
 
-    public async eval(cell: vscode.NotebookCell): Promise<string> {
+	public async eval(cell: vscode.NotebookCell): Promise<string> {
 
 		const cellPath = cell.document.languageId === 'xpath' ? this.dumpCell(cell) : this.dumpCell(cell); // TODO: dumpJSCell
 		if (cellPath && this.nodeRuntime && this.nodeRuntime.stdin) {
 			this.outputBuffer = '';
+			this.hasRuntimeError = false;
+
 			this.nodeRuntime.stdin.write(`.load ${cellPath}\n`);
 			while (this.outputBuffer === '') {
 				await this.sleep(100);
 			}
-			return Promise.resolve(this.outputBuffer);
+		
+			if (this.hasRuntimeError) {
+				return Promise.reject(this.outputBuffer);
+			} else {
+				return Promise.resolve(this.outputBuffer);
+			}
 		}
 		throw new Error('Evaluation failed');
 	}
 
-    private sleep(time: number) {
+	private sleep(time: number) {
 		return new Promise(res => setTimeout(res, time));
 	}
 
-    private dumpCell(cell: vscode.NotebookCell): string | undefined {
+	private dumpCell(cell: vscode.NotebookCell): string | undefined {
 		try {
 
 			const cellUri = cell.document.uri;
-            const cellText = cell.document.getText();
+			const cellText = cell.document.getText();
 			if (cellUri.scheme === 'vscode-notebook-cell') {
 				// set context
 				let contextScript = '';
@@ -74,24 +92,17 @@ export class NodeKernel {
 					xmlnsXPath = xmlnsXPath.replace(/\s+/g, ' ');
 
 					contextScript = `
-					var context = SaxonJS.XPath.evaluate("doc('${ExtensionData.lastEditorUri}')");
-					var docXmlns = SaxonJS.XPath.evaluate("${xmlnsXPath}", context);
-					var invDocXmlns = {};
-							Object.entries(docXmlns).forEach((kvp) => {
-								const [name, value] = kvp;
-								invDocXmlns[value] = name;
-							});
-					var convertPath = (path) => {
-						return path.replace(/Q{[^{]*}/g, (match) => {
-							const uri = match.substring(2, match.length - 1);
-							const pfx = invDocXmlns[uri];
-							if (pfx) {
-								return pfx === '_d'? '' : pfx + ':';
-							} else {
-								return match;
-							}
-							});
-					};
+					try {
+						var context = SaxonJS.XPath.evaluate("doc('${ExtensionData.lastEditorUri}')");
+						var docXmlns = SaxonJS.XPath.evaluate("${xmlnsXPath}", context);
+						var invDocXmlns = {};
+						Object.entries(docXmlns).forEach((kvp) => {
+							const [name, value] = kvp;
+							invDocXmlns[value] = name;
+						});
+					} catch(error) {
+						throw new Error('Error: No XML document is set as the context');
+					}
 					`;
 					contextScript += `
 					var baseXmlns = {
@@ -124,10 +135,10 @@ export class NodeKernel {
 					`;
 				}
 
-                let data = contextScript;
+				let data = contextScript;
 				data += "try {\n"
-                data += "prevResult = SaxonJS.XPath.evaluate(\`" + cellText + "\`, context, options);\n";
-								data += `
+				data += "prevResult = SaxonJS.XPath.evaluate(\`" + cellText + "\`, context, options);\n";
+				data += `
 								let resultTransform = SaxonJS.transform({
 									stylesheetLocation: "${ExtensionData.getSefPath()}",
 									initialTemplate: "main",
@@ -140,25 +151,25 @@ export class NodeKernel {
 							 prevResult = JSON.parse(prevResult);
 							 prevResult = JSON.stringify(prevResult, null, 4);
 `
-                data += `
+				data += `
 console.log(prevResult);
 				`
 				data += `} catch(error) {
 console.log('Errx:');
 console.log(error);
 }					`;
-                //data += "SaxonJS.serialize(result);";
+				//data += "SaxonJS.serialize(result);";
 				console.log(data);
-                const cellPath = `${this.tmpDirectory}/nodebook_cell_${cellUri.fragment}.js`;
-                fs.writeFileSync(cellPath, data);
-                return cellPath;
+				const cellPath = `${this.tmpDirectory}/nodebook_cell_${cellUri.fragment}.js`;
+				fs.writeFileSync(cellPath, data);
+				return cellPath;
 			}
 		} catch (e) {
 		}
 		return undefined;
 	}
 
-    public async runSaxonLoader(): Promise<string> {
+	public async runSaxonLoader(): Promise<string> {
 
 		const saxonLoaderPath = this.dumpSaxonLoader();
 		if (saxonLoaderPath && this.nodeRuntime && this.nodeRuntime.stdin) {
@@ -169,13 +180,14 @@ console.log(error);
 			//await new Promise(res => setTimeout(res, 500));	// wait a bit to collect all output that is associated with this eval
 			// silent:
 			this.outputBuffer = '';
-			return Promise.resolve(this.outputBuffer); }
+			return Promise.resolve(this.outputBuffer);
+		}
 		throw new Error('Evaluation failed');
 	}
 
-/**
- * Store cell in temporary file and return its path or undefined if uri does not denote a cell.
- */
+	/**
+	 * Store cell in temporary file and return its path or undefined if uri does not denote a cell.
+	 */
 	private dumpSaxonLoader(): string | undefined {
 		try {
 			if (!this.tmpDirectory) {

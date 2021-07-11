@@ -43,15 +43,29 @@ export class XBookController {
       execution.start(Date.now()); // Keep track of elapsed time to execute cell.
 
       await this.nodeKernel.start();
-      const result = await this.nodeKernel.eval(cell);
-      /* Do some execution here; not implemented */
-  
-      execution.replaceOutput([
+      let isSuccess = true;
+      let result = '';
+      try {
+        result = await this.nodeKernel.eval(cell);
+      } catch (error) {
+        result = error;
+        isSuccess = false;
+      }
+
+      if (isSuccess) {
+        execution.replaceOutput([
         new vscode.NotebookCellOutput([
           vscode.NotebookCellOutputItem.text(result)
         ])
       ]);
-      execution.end(true, Date.now());
+      } else {
+        execution.replaceOutput([
+          new vscode.NotebookCellOutput([
+            vscode.NotebookCellOutputItem.text(result)
+          ])
+        ]);
+      }
+      execution.end(isSuccess, Date.now());
     }
 
     public dispose() {
