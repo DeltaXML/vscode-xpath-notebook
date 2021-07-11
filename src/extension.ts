@@ -1,5 +1,6 @@
 import * as vscode from 'vscode';
 import { ExtensionData } from './extensionData';
+import { JsonDefinitionProvider } from './jsonDefinitionProvider';
 import { XBookController } from './xbookController';
 import { XBookSerializer } from './xbookSerializer';
 import { XpathResultTokenProvider } from './xpathResultTokenProvider';
@@ -9,6 +10,7 @@ export function activate(context: vscode.ExtensionContext) {
 
   context.subscriptions.push(
 		vscode.languages.registerDocumentSemanticTokensProvider({ language: 'javascript' }, new XpathResultTokenProvider(), XpathResultTokenProvider.getLegend()),
+		vscode.languages.registerDefinitionProvider({ language: 'javascript' }, new JsonDefinitionProvider()),
 		vscode.window.onDidChangeActiveTextEditor(editor => {
 			ExtensionData.registerEditor(editor);
 		}),
