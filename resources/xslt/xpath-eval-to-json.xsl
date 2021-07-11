@@ -9,20 +9,21 @@
                 expand-text="yes"
                 version="3.0">
   
-  <xsl:output method="text" indent="yes"/>
+  <xsl:output method="text" indent="no"/>
   <xsl:mode on-no-match="shallow-copy"/>
   
   <xsl:param name="eval-result" as="item()*" select="()"/>
   <xsl:param name="expression" as="xs:string"/>
   <xsl:param name="sourceURI" as="xs:string?"/>
   <xsl:variable name="sourceDoc" as="node()?" select="if ($sourceURI) then doc($sourceURI) else ()"/>
-  <xsl:variable name="xmlnsMap" as="map(*)" 
+  <xsl:variable name="xmlnsMap" as="map(*)?" 
     select="if ($sourceDoc) then ext:getURItoPrefixMap($sourceDoc/*) else ()"/>
   
   <xsl:variable name="test1" select="map { 'values': ['uno', 'dos','tres', true(), (), 24] }"/>
   <xsl:variable name="test2" select="map {'abc': 'gloucester', 'def': (), 'deep': map { 'lvl2': 22 } }"/>
   <xsl:variable name="test3" select="[ 'spurs', 'bristol city', (), 'man united', array { 5,10,15 } ]"/>
   <xsl:variable name="test4" select="/*/*"/>
+  <xsl:variable name="test5" select="map {'node': /*/*/@*}"/>
   
   <xsl:template name="main">
     <xsl:variable name="result" as="item()*" select="ext:evaluate($sourceDoc)"/>
@@ -36,7 +37,7 @@
   </xsl:template>
   
   <xsl:template name="test">
-    <xsl:variable name="jsonXML" select="ext:convertArrayEntry($test4)"/>
+    <xsl:variable name="jsonXML" select="ext:convertArrayEntry($test5)"/>
     <xsl:sequence select="xml-to-json($jsonXML)"/>
   </xsl:template>
   
@@ -87,7 +88,6 @@
           <xsl:sequence select="if (string-length($pfx) eq 0) then '' else $pfx || ':'"/>
         </xsl:matching-substring>
         <xsl:non-matching-substring>
-          <xsl:message select="'non-matching', ."/> 
           <xsl:sequence select="."/>
         </xsl:non-matching-substring>
       </xsl:analyze-string>
@@ -102,10 +102,11 @@
     <xsl:choose>
       <xsl:when test="count($value) gt 1">
         <array>
+          <xsl:if test="$key">
+            <xsl:attribute name="key" select="$key"/>
+          </xsl:if>
           <xsl:for-each select="$value">
-            <xsl:apply-templates select=".">
-              <xsl:with-param name="key" select="$key"/>
-            </xsl:apply-templates>
+            <xsl:apply-templates select="."/>
           </xsl:for-each>
         </array>
       </xsl:when>
