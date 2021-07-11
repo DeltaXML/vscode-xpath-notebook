@@ -100,11 +100,14 @@ export class XpathResultTokenProvider implements vscode.DocumentSemanticTokensPr
     }
 
     private pushTokens(tLine: string, propNameOffset: number, padding: number, builder: vscode.SemanticTokensBuilder, lineNum: number, line: string) {
-        const spacePos = tLine.indexOf(' ', 3 + propNameOffset);
+        let spacePos = tLine.indexOf(' ', 3 + propNameOffset);
         const pathStart = padding + 2;
         builder.push(lineNum, padding + propNameOffset, 1, TokenType.xmlPunctuation, 0);
         builder.push(lineNum, padding + propNameOffset + 1, 1, TokenType.xmlPunctuation, 0);
         const endPos = tLine.endsWith(',') ? line.length - 2 : line.length - 1;
+        if (spacePos === -1) { 
+            spacePos = endPos;
+        }
         builder.push(lineNum, endPos, 1, TokenType.xmlPunctuation, 0);
         const path = tLine.substring(propNameOffset, spacePos);
         const pathParts = path.split('@');
