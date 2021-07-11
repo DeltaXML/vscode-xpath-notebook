@@ -92,7 +92,7 @@
         </xsl:non-matching-substring>
       </xsl:analyze-string>
     </xsl:variable>
-    <xsl:sequence select="string-join($parts)"/>
+    <xsl:sequence select="'&#x1680;' || string-join($parts)"/>
   </xsl:function>
   
   <xsl:function name="ext:convertMapEntry">
