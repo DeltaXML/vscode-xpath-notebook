@@ -55,7 +55,7 @@ export class XBookController {
 
       if (isSuccess) {
         const resultObj = JSON.parse(result);
-        const htmlString = ''; //HtmlTables.constructTableForObject(resultObj);
+        const htmlString = HtmlTables.constructTableForObject(resultObj);
         execution.replaceOutput([
         new vscode.NotebookCellOutput([
           vscode.NotebookCellOutputItem.text(result, 'text/x-javascript'),
