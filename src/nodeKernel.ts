@@ -81,61 +81,12 @@ export class NodeKernel {
 				// set context
 				let contextScript = '';
 				if (ExtensionData.lastEditorUri) {
-					let xmlnsXPath = `let $source := /* 
-					return 
-							map:merge(
-									for $pfx in in-scope-prefixes($source),
-											$ns in namespace-uri-for-prefix($pfx, $source)
-									return 
-											if ($pfx => string-length() ne 0) then
-													map:entry($pfx, $ns)
-											else
-													(: use prefix _d for default :)
-													map:entry(codepoints-to-string([95,100]), $ns)
-							)`
-					xmlnsXPath = xmlnsXPath.replace(/\s+/g, ' ');
-
 					contextScript = `
 					try {
 						var context = SaxonJS.XPath.evaluate("doc('${ExtensionData.lastEditorUri}')");
-						var docXmlns = SaxonJS.XPath.evaluate("${xmlnsXPath}", context);
-						var invDocXmlns = {};
-						Object.entries(docXmlns).forEach((kvp) => {
-							const [name, value] = kvp;
-							invDocXmlns[value] = name;
-						});
 					} catch(error) {
 						throw new Error('Notebook Error: Most recent editor should host a valid XML file:\\n${ExtensionData.lastEditorUri}');
 					}
-					`;
-					contextScript += `
-					var baseXmlns = {
-						'xsi': 'http://www.w3.org/2001/XMLSchema-instance',
-						'array': 'http://www.w3.org/2005/xpath-functions/array',
-						'map': 'http://www.w3.org/2005/xpath-functions/map',
-						'math': 'http://www.w3.org/2005/xpath-functions/math'
-					}
-					
-					var options = {
-						namespaceContext: Object.assign(baseXmlns, docXmlns),
-						staticBaseURI: '${ExtensionData.getBaseUri()}', 
-						params: {
-							'_': prevResult
-						}
-					};
-					if (docXmlns['_d']) {
-						options['xpathDefaultNamespace'] = docXmlns['_d'];
-					}
-					`;
-				} else {
-					contextScript = `
-					var context = SaxonJS.XPath.evaluate('()');
-					var options = {
-						staticBaseURI: '${ExtensionData.calcBaseUri(cellUri)}',
-						params: {
-							'_': prevResult
-						}
-					};
 					`;
 				}
 
