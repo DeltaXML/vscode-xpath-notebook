@@ -11,8 +11,8 @@ export function activate(context: vscode.ExtensionContext) {
 
   context.subscriptions.push(
 		vscode.languages.registerDocumentSemanticTokensProvider({ language: 'javascript' }, new XpathResultTokenProvider(), XpathResultTokenProvider.getLegend()),
-		vscode.languages.registerDefinitionProvider({ language: 'javascript' }, new JsonDefinitionProvider()),
-		vscode.languages.registerHoverProvider({ language: 'javascript' }, new JSONHoverProvider()),
+		//vscode.languages.registerDefinitionProvider({ language: 'javascript' }, new JsonDefinitionProvider()),
+		//vscode.languages.registerHoverProvider({ language: 'javascript' }, new JSONHoverProvider()),
 		vscode.window.onDidChangeActiveTextEditor(editor => {
 			ExtensionData.registerEditor(editor);
 		}),
