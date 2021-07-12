@@ -24,6 +24,11 @@
   <xsl:variable name="test3" select="[ 'spurs', 'bristol city', (), 'man united', array { 5,10,15 } ]"/>
   <xsl:variable name="test4" select="/*/*"/>
   <xsl:variable name="test5" select="map {'node': /*/*/@*}"/>
+  <xsl:variable name="test6" as="item()*" 
+    select="map {
+        'node1': (/*/*/@*)[1],
+        'node2':  (/*/*/@*)[2]
+      }"/>
   
   <xsl:template name="main">
     <xsl:variable name="result" as="item()*" select="ext:evaluate($sourceDoc)"/>
@@ -37,7 +42,7 @@
   </xsl:template>
   
   <xsl:template name="test">
-    <xsl:variable name="jsonXML" select="ext:convertArrayEntry($test5)"/>
+    <xsl:variable name="jsonXML" select="ext:convertArrayEntry($test6)"/>
     <xsl:sequence select="xml-to-json($jsonXML)"/>
   </xsl:template>
   
@@ -144,7 +149,13 @@
     </xsl:choose>
   </xsl:function>
   
-  <xsl:template match=".[. instance of node()]" mode="#default">
+  <xsl:template match=".[
+      . instance of node() 
+      or . instance of text()
+      or . instance of attribute()
+      or . instance of processing-instruction()
+      or . instance of comment()
+    ]" mode="#default">
     <xsl:param name="key" as="xs:string?"/>
     <string>
       <xsl:if test="$key">

@@ -1,5 +1,6 @@
 import * as vscode from 'vscode';
 import { NotebookController } from 'vscode';
+import { HtmlTables } from './htmlTables';
 import { NodeKernel } from './nodeKernel';
 
 export class XBookController {
@@ -53,9 +54,12 @@ export class XBookController {
       }
 
       if (isSuccess) {
+        const resultObj = JSON.parse(result);
+        const htmlString = ''; //HtmlTables.constructTableForObject(resultObj);
         execution.replaceOutput([
         new vscode.NotebookCellOutput([
-          vscode.NotebookCellOutputItem.text(result, 'text/x-javascript')
+          vscode.NotebookCellOutputItem.text(result, 'text/x-javascript'),
+          vscode.NotebookCellOutputItem.text(htmlString, 'text/html')
         ])
       ]);
       } else {
