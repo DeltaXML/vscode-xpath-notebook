@@ -24,9 +24,12 @@ export class NodeKernel {
 			if (this.nodeRuntime.stdout) {
 				this.nodeRuntime.stdout.on('data', (data: Buffer) => {
 					const dataStr = data.toString();
-					if (dataStr.startsWith('Uncaught Error:')) {
+					if (dataStr.startsWith('Uncaught')) {
 						this.hasRuntimeError = true;
 						this.outputBuffer += dataStr.substring(15);
+					} else if (dataStr.includes('\nUncaught')) {
+						this.hasRuntimeError = true;
+						this.outputBuffer += dataStr;
 					} else {
 						this.outputBuffer += dataStr;
 					}

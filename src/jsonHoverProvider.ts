@@ -12,6 +12,7 @@ enum CharType {
 export class JSONHoverProvider implements HoverProvider {
 
 	provideHover(document: TextDocument, position: Position, token: CancellationToken): ProviderResult<Hover> {
+		const isCancelled = token.isCancellationRequested;
 		const line = document.lineAt(position.line);
 		let fnName = true;
 
