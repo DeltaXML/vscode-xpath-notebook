@@ -141,7 +141,7 @@ export class NodeKernel {
 
 				let data = contextScript;
 				data += "try {\n"
-				data += "prevResult = SaxonJS.XPath.evaluate(\`" + cellText + "\`, context, options);\n";
+				//data += "prevResult = SaxonJS.XPath.evaluate(\`" + cellText + "\`, context, options);\n";
 				data += `
 								let resultTransform = SaxonJS.transform({
 									stylesheetLocation: "${ExtensionData.getSefPath()}",

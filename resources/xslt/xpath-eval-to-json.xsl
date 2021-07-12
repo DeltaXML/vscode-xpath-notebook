@@ -15,23 +15,46 @@
   <xsl:param name="eval-result" as="item()*" select="()"/>
   <xsl:param name="expression" as="xs:string"/>
   <xsl:param name="sourceURI" as="xs:string?"/>
-  <xsl:variable name="sourceDoc" as="node()?" select="if ($sourceURI) then doc($sourceURI) else ()"/>
+  <xsl:variable name="sourceDoc" as="document-node()?" select="if ($sourceURI and $sourceURI ne 'undefined') then doc($sourceURI) else ()"/>
+  <xsl:variable name="contextNsDoc" as="element()" select="ext:createContextElement()"/>
   <xsl:variable name="xmlnsMap" as="map(*)?" 
     select="if ($sourceDoc) then ext:getURItoPrefixMap($sourceDoc/*) else ()"/>
+  
+  <xsl:variable name="nsContextElement" as="element()">
+    <root xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+          xmlns:xs="http://www.w3.org/2001/XMLSchema"
+          xmlns:array="http://www.w3.org/2005/xpath-functions/array"
+          xmlns:map="http://www.w3.org/2005/xpath-functions/map"
+          xmlns:math="http://www.w3.org/2005/xpath-functions/math"
+      />
+  </xsl:variable>
+  
+  <xsl:function name="ext:createContextElement" as="element()">
+    <xsl:choose>
+      <xsl:when test="$sourceDoc">
+        <root>
+          <xsl:sequence select="$sourceDoc/*/namespace-node()"/>
+          <xsl:namespace name="array" select="'http://www.w3.org/2005/xpath-functions/array'"/>
+          <xsl:namespace name="map" select="'http://www.w3.org/2005/xpath-functions/map'"/>
+          <xsl:namespace name="math" select="'http://www.w3.org/2005/xpath-functions/math'"/>
+          <xsl:namespace name="xs" select="'http://www.w3.org/2001/XMLSchema'"/>
+        </root>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:sequence select="$nsContextElement"/>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:function>
   
   <xsl:variable name="test1" select="map { 'values': ['uno', 'dos','tres', true(), (), 24] }"/>
   <xsl:variable name="test2" select="map {'abc': 'gloucester', 'def': (), 'deep': map { 'lvl2': 22 } }"/>
   <xsl:variable name="test3" select="[ 'spurs', 'bristol city', (), 'man united', array { 5,10,15 } ]"/>
   <xsl:variable name="test4" select="/*/*"/>
   <xsl:variable name="test5" select="map {'node': /*/*/@*}"/>
-  <xsl:variable name="test6" as="item()*" 
-    select="map {
-        'node1': (/*/*/@*)[1],
-        'node2':  (/*/*/@*)[2]
-      }"/>
+  <xsl:variable name="test6" as="xs:string" select="'base-uri(), array:size([1,2,3]), /books'"/>
   
   <xsl:template name="main">
-    <xsl:variable name="result" as="item()*" select="ext:evaluate($sourceDoc)"/>
+    <xsl:variable name="result" as="item()*" select="ext:evaluate($sourceDoc, $expression)"/>
     <xsl:variable name="jsonXML" select="ext:convertArrayEntry($result)"/>
     <xsl:sequence select="xml-to-json($jsonXML)"/>
   </xsl:template>
@@ -42,26 +65,29 @@
   </xsl:template>
   
   <xsl:template name="test">
-    <xsl:variable name="jsonXML" select="ext:convertArrayEntry($test6)"/>
+    <xsl:variable name="result" as="item()*" select="ext:evaluate($sourceDoc, $test6)"/>
+    <xsl:variable name="jsonXML" select="ext:convertArrayEntry($result)"/>
     <xsl:sequence select="xml-to-json($jsonXML)"/>
   </xsl:template>
   
   <xsl:function name="ext:evaluate" as="item()*">
     <xsl:param name="doc" as="node()?"/>
+    <xsl:param name="xpathText" as="xs:string"/>
     <xsl:choose>
       <xsl:when test="$doc">
         <xsl:evaluate 
-          xpath="$expression"
+          xpath="$xpathText"
           context-item="$doc"
-          namespace-context="$doc/*"
+          namespace-context="$contextNsDoc"
           >
           
         </xsl:evaluate>
       </xsl:when>
       <xsl:otherwise>
         <xsl:evaluate 
-          xpath="$expression"
+          xpath="$xpathText"
           context-item="$doc"
+          namespace-context="$contextNsDoc"
           >
           
         </xsl:evaluate>
