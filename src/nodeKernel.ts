@@ -147,7 +147,7 @@ export class NodeKernel {
 									initialTemplate: "main",
 									stylesheetParams: {
 										"sourceURI": "${ExtensionData.lastEditorUri}",
-										"expression": "${cellText}"
+										"expression": \`${cellText}\`
 									}
 							 });
 							 prevResult = '' + resultTransform.principalResult;
