@@ -17,6 +17,11 @@
   <xsl:param name="expression" as="xs:string"/>
   <xsl:param name="sourceURI" as="xs:string?"/>
   <xsl:param name="this" as="item()"/>
+  
+  <xsl:variable name="percentCP" as="xs:integer" select="string-to-codepoints('%')[1]"/>
+  <xsl:variable name="singleQuoteCP" as="xs:integer" select="string-to-codepoints('''')[1]"/>
+  <xsl:variable name="doubleQuoteCP" as="xs:integer" select="string-to-codepoints('&quot;')[1]"/>
+  
   <xsl:variable name="xpathVariableNames" select="ixsl:get($this, 'keys')"/>
   <xsl:variable name="xpathVariableMap" as="map(*)">
     <xsl:map>
@@ -65,7 +70,8 @@
   <xsl:variable name="test6" as="xs:string" select="'base-uri(), array:size([1,2,3]), /books'"/>
   
   <xsl:template name="main">
-    <xsl:variable name="result" as="item()*" select="ext:evaluate($sourceDoc, $expression)"/>
+    <xsl:variable name="cleanedExpression" as="xs:string" select="ext:removePreamble($expression)"/>
+    <xsl:variable name="result" as="item()*" select="ext:evaluate($sourceDoc, $cleanedExpression)"/>
     <!-- <xsl:sequence select="ixsl:apply($set-fn, ['mytest', 'hello'])"/> -->
     <xsl:sequence select="ixsl:call($this, 'setVariable', ['myname', 'myvalue'])"/>
     <xsl:variable name="jsonXML" select="ext:convertArrayEntry($result)"/>
@@ -105,6 +111,23 @@
           return 
             map:entry($ns, $pfx)
         )"/>
+  </xsl:function>
+  
+  <xsl:function name="ext:removePreamble" as="xs:string">
+    <xsl:param name="text" as="xs:string"/>
+    <xsl:variable name="codepoints" as="xs:integer*" select="string-to-codepoints($text)"/>
+    <xsl:variable name="percentPos" as="xs:integer?" select="index-of($codepoints, $percentCP)[1]"/>
+    <xsl:variable name="singlePos" as="xs:integer?" select="index-of($codepoints, $singleQuoteCP)[1]"/>
+    <xsl:variable name="doublePos" as="xs:integer?" select="index-of($codepoints, $doubleQuoteCP)[1]"/>
+    
+    <xsl:variable name="resolvedPos" as="xs:integer?" >
+      <xsl:if test="exists($percentPos)">
+        <xsl:variable name="minPos" as="xs:integer" select="min(($percentPos, $singlePos, $doublePos))"/>
+        <xsl:sequence select="if ($percentPos eq $minPos) then $percentPos else ()"/>
+      </xsl:if>
+    </xsl:variable>
+    <xsl:sequence select="if ($percentPos) then substring($text, $percentPos + 1) else $text"/>
+    
   </xsl:function>
   
   <xsl:variable name="regex" as="xs:string" select="'Q\{[^\{]*\}'"/>
