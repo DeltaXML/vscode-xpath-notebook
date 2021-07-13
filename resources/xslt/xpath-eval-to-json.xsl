@@ -5,6 +5,7 @@
                 xmlns:map="http://www.w3.org/2005/xpath-functions/map"
                 xmlns:ext="com.functions.ext"
                 xmlns="http://www.w3.org/2005/xpath-functions"
+                xmlns:ixsl="http://saxonica.com/ns/interactiveXSLT"
                 exclude-result-prefixes="#all"
                 expand-text="yes"
                 version="3.0">
@@ -15,6 +16,7 @@
   <xsl:param name="eval-result" as="item()*" select="()"/>
   <xsl:param name="expression" as="xs:string"/>
   <xsl:param name="sourceURI" as="xs:string?"/>
+  <xsl:param name="this" as="item()"/>
   <xsl:variable name="sourceDoc" as="document-node()?" select="if ($sourceURI and $sourceURI ne 'undefined') then doc($sourceURI) else ()"/>
   <xsl:variable name="contextNsDoc" as="element()" select="ext:createContextElement()"/>
   <xsl:variable name="xmlnsMap" as="map(*)?" 
@@ -55,6 +57,8 @@
   
   <xsl:template name="main">
     <xsl:variable name="result" as="item()*" select="ext:evaluate($sourceDoc, $expression)"/>
+    <!-- <xsl:sequence select="ixsl:apply($set-fn, ['mytest', 'hello'])"/> -->
+    <xsl:sequence select="ixsl:call($this, 'setVariable', ['myname', 'myvalue'])"/>
     <xsl:variable name="jsonXML" select="ext:convertArrayEntry($result)"/>
     <xsl:sequence select="xml-to-json($jsonXML)"/>
   </xsl:template>
@@ -73,26 +77,13 @@
   <xsl:function name="ext:evaluate" as="item()*">
     <xsl:param name="doc" as="node()?"/>
     <xsl:param name="xpathText" as="xs:string"/>
-    <xsl:choose>
-      <xsl:when test="$doc">
-        <xsl:evaluate 
-          xpath="$xpathText"
-          context-item="$doc"
-          namespace-context="$contextNsDoc"
-          >
-          
-        </xsl:evaluate>
-      </xsl:when>
-      <xsl:otherwise>
-        <xsl:evaluate 
-          xpath="$xpathText"
-          context-item="$doc"
-          namespace-context="$contextNsDoc"
-          >
-          
-        </xsl:evaluate>
-      </xsl:otherwise>
-    </xsl:choose>
+    <xsl:evaluate 
+      xpath="$xpathText"
+      context-item="$doc"
+      namespace-context="$contextNsDoc"
+      >
+      
+    </xsl:evaluate>
   </xsl:function>
   
   <xsl:function name="ext:getURItoPrefixMap" as="map(*)">

@@ -99,7 +99,8 @@ export class NodeKernel {
 									initialTemplate: "main",
 									stylesheetParams: {
 										"sourceURI": "${ExtensionData.lastEditorUri}",
-										"expression": \`${cellText}\`
+										"expression": \`${cellText}\`,
+										"this": globalVariables
 									}
 							 });
 							 prevResult = '' + resultTransform.principalResult;
@@ -143,6 +144,7 @@ console.log(prevResult);
 	 * Store cell in temporary file and return its path or undefined if uri does not denote a cell.
 	 */
 	private dumpSaxonLoader(): string | undefined {
+
 		try {
 			if (!this.tmpDirectory) {
 				this.tmpDirectory = fs.mkdtempSync(PATH.join(os.tmpdir(), 'xpath-notebook-'));
@@ -154,6 +156,20 @@ console.log(prevResult);
 
 			let script = `
 				const SaxonJS = require(${escapedSlashPath});
+				class GlobalVariables {
+					variables = {};
+					setVariable = (name, value) => {
+						this.variables[name] = value;
+					}
+					getVariables = () => {
+						return this.variables;
+					}
+					getVariable = (name) => {
+						return this.variables[name];
+					}
+				}
+				const globalVariables = new GlobalVariables();
+				globalVariables.setVariable('test', 'hello world');
 				let prevResult = [];
 				`;
 			fs.writeFileSync(saxonLoaderPath, script);
