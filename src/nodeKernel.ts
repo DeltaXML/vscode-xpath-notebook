@@ -153,6 +153,8 @@ console.log(prevResult);
 			const escapedSpacePath = ExtensionData.extensionPath;
 			const joinedPath = PATH.join(escapedSpacePath, "node_modules", "saxon-js");
 			const escapedSlashPath = '"' + joinedPath.replace(/(\\)/g, '\\$1') + '"';
+			const arr = [1,2,3];
+			const tst = arr.indexOf(1);
 
 			let script = `
 				const SaxonJS = require(${escapedSlashPath});
@@ -160,7 +162,9 @@ console.log(prevResult);
 					variables = {};
 					keys = [];
 					setVariable = (name, value) => {
-						this.keys.push(name);
+						if (this.keys.indexOf(name) === -1) {
+							this.keys.push(name);
+						}
 						this.variables[name] = value;
 					}
 					getKeys = () => {

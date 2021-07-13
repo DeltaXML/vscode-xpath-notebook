@@ -126,7 +126,7 @@
         <xsl:sequence select="if ($percentPos eq $minPos) then $percentPos else ()"/>
       </xsl:if>
     </xsl:variable>
-    <xsl:sequence select="if ($percentPos) then substring($text, $percentPos + 1) else $text"/>
+    <xsl:sequence select="if ($resolvedPos) then substring($text, $resolvedPos + 1) else $text"/>
     
   </xsl:function>
   
