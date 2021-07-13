@@ -17,6 +17,15 @@
   <xsl:param name="expression" as="xs:string"/>
   <xsl:param name="sourceURI" as="xs:string?"/>
   <xsl:param name="this" as="item()"/>
+  <xsl:variable name="xpathVariableNames" select="ixsl:get($this, 'keys')"/>
+  <xsl:variable name="xpathVariableMap" as="map(*)">
+    <xsl:map>
+      <xsl:for-each select="$xpathVariableNames">
+        <xsl:map-entry key="QName('', .)" select="ixsl:call($this, 'getVariable', [.])"/>
+      </xsl:for-each>
+    </xsl:map>
+  </xsl:variable>
+  
   <xsl:variable name="sourceDoc" as="document-node()?" select="if ($sourceURI and $sourceURI ne 'undefined') then doc($sourceURI) else ()"/>
   <xsl:variable name="contextNsDoc" as="element()" select="ext:createContextElement()"/>
   <xsl:variable name="xmlnsMap" as="map(*)?" 
@@ -81,8 +90,8 @@
       xpath="$xpathText"
       context-item="$doc"
       namespace-context="$contextNsDoc"
+      with-params="$xpathVariableMap"
       >
-      
     </xsl:evaluate>
   </xsl:function>
   

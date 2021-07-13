@@ -158,8 +158,13 @@ console.log(prevResult);
 				const SaxonJS = require(${escapedSlashPath});
 				class GlobalVariables {
 					variables = {};
+					keys = [];
 					setVariable = (name, value) => {
+						this.keys.push(name);
 						this.variables[name] = value;
+					}
+					getKeys = () => {
+						return this.keys;
 					}
 					getVariables = () => {
 						return this.variables;
