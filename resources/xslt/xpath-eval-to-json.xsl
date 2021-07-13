@@ -80,6 +80,7 @@
     <xsl:if test="$assignVarName">
       <xsl:sequence select="ixsl:call($this, 'setVariable', [$assignVarName, $result])"/>
     </xsl:if>
+    <xsl:sequence select="ixsl:call($this, 'setVariable', ['_', $result])"/>
     <xsl:variable name="jsonXML" select="ext:convertArrayEntry($result)"/>
     <xsl:sequence select="xml-to-json($jsonXML)"/>
   </xsl:template>

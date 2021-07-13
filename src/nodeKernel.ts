@@ -160,6 +160,7 @@ console.log(prevResult);
 
 			let script = `
 				const SaxonJS = require(${escapedSlashPath});
+				let prevResult = [];
 				class GlobalVariables {
 					variables = {};
 					keys = [];
@@ -181,7 +182,6 @@ console.log(prevResult);
 				}
 				const globalVariables = new GlobalVariables();
 				globalVariables.setVariable('test', 'hello world');
-				let prevResult = [];
 				`;
 			fs.writeFileSync(saxonLoaderPath, script);
 			return saxonLoaderPath;
