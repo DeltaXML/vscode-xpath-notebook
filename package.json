@@ -68,6 +68,9 @@
         "watch": "tsc -watch -p ./",
         "test": "jest"
     },
+    "extensionDependencies": [
+        "deltaxml.xslt-xpath"
+    ],
     "devDependencies": {
         "@types/jest": "^24.9.1",
         "@types/node": "^10.17.17",
