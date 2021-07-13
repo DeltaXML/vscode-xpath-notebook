@@ -35,7 +35,6 @@ export class NodeKernel {
 						this.outputBuffer += dataStr;
 					} else if (dataStr.includes('#keys#')) {
 						this.outputKeys = dataStr.substring(7);
-						console.log('outputKeys ======', this.outputKeys);
 					} else {
 						this.outputBuffer += dataStr;
 					}
@@ -126,8 +125,6 @@ console.log(prevResult);
 				data += `} catch(error) {
 					throw new Error(error.toString());
 }					`;
-				//data += "SaxonJS.serialize(result);";
-				console.log(data);
 				const cellPath = `${this.tmpDirectory}/nodebook_cell_${cellUri.fragment}.js`;
 				fs.writeFileSync(cellPath, data);
 				return cellPath;
