@@ -24,6 +24,7 @@ export class XBookController {
       this._controller.supportedLanguages = this.supportedLanguages;
       this._controller.supportsExecutionOrder = true;
       this._controller.executeHandler = this._execute.bind(this);
+      this._controller.interruptHandler = this._interrupt.bind(this);
 
       this.nodeKernel = new NodeKernel();
     }
@@ -36,6 +37,10 @@ export class XBookController {
       for (let cell of cells) {
         this._doExecution(cell);
       }
+    }
+
+    private _interrupt() {
+      this.nodeKernel.stop();
     }
   
     private async _doExecution(cell: vscode.NotebookCell): Promise<void> {
@@ -73,6 +78,6 @@ export class XBookController {
     }
 
     public dispose() {
-
+      this.nodeKernel.stop();
     }
   }
