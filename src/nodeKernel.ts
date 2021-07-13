@@ -188,6 +188,29 @@ console.log(prevResult);
 		return undefined;
 	}
 
+	public async restart() {
+		this.stop();
+		await this.start();
+	}
+
+	public stop() {
+
+		if (this.nodeRuntime) {
+			this.nodeRuntime.kill();
+			this.nodeRuntime = undefined;
+		}
+
+		if (this.tmpDirectory) {
+			const t = this.tmpDirectory;
+			this.tmpDirectory = undefined;
+			rmdir(t, { glob: false }, (err: Error | undefined) => {
+				if (err) {
+					console.log(err);
+				}
+			});
+		}
+	}
+
 
 
 }
