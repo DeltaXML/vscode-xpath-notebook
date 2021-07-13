@@ -5,7 +5,6 @@
     "version": "0.0.1",
     "publisher": "deltaxml",
     "icon": "xpath-notebook.png",
-    "enableProposedApi": true,
     "bugs": {
         "url": "https://github.com/DeltaXML/vscode-xpath-notebook/issues"
     },
