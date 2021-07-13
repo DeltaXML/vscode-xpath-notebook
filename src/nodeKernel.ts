@@ -2,6 +2,8 @@ import * as vscode from 'vscode';
 import * as cp from 'child_process';
 import * as fs from 'fs';
 import * as os from 'os';
+const rmdir = require('rimraf');
+
 
 import * as PATH from 'path';
 import { ExtensionData } from './extensionData';
