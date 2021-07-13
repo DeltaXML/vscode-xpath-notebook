@@ -70,10 +70,16 @@
   <xsl:variable name="test6" as="xs:string" select="'base-uri(), array:size([1,2,3]), /books'"/>
   
   <xsl:template name="main">
-    <xsl:variable name="cleanedExpression" as="xs:string" select="ext:removePreamble($expression)"/>
+    <xsl:variable name="expressionParts" as="xs:string*" select="ext:extractPreamble($expression)"/>
+    <xsl:variable name="preamble" as="xs:string" select="$expressionParts[1]"/>
+    <xsl:variable name="preambleParts" as="xs:string*" select="tokenize($preamble, '\s*=\s*')"/>
+    <xsl:variable name="assignVarName" as="xs:string?" select="if (count($preambleParts) eq 2 and $preambleParts[1] eq 'variable') then $preambleParts[2] else ()"/>
+    <xsl:variable name="cleanedExpression" as="xs:string" select="$expressionParts[2]"/>
     <xsl:variable name="result" as="item()*" select="ext:evaluate($sourceDoc, $cleanedExpression)"/>
     <!-- <xsl:sequence select="ixsl:apply($set-fn, ['mytest', 'hello'])"/> -->
-    <xsl:sequence select="ixsl:call($this, 'setVariable', ['myname', 'myvalue'])"/>
+    <xsl:if test="$assignVarName">
+      <xsl:sequence select="ixsl:call($this, 'setVariable', [$assignVarName, $result])"/>
+    </xsl:if>
     <xsl:variable name="jsonXML" select="ext:convertArrayEntry($result)"/>
     <xsl:sequence select="xml-to-json($jsonXML)"/>
   </xsl:template>
@@ -113,7 +119,7 @@
         )"/>
   </xsl:function>
   
-  <xsl:function name="ext:removePreamble" as="xs:string">
+  <xsl:function name="ext:extractPreamble" as="xs:string*">
     <xsl:param name="text" as="xs:string"/>
     <xsl:variable name="codepoints" as="xs:integer*" select="string-to-codepoints($text)"/>
     <xsl:variable name="percentPos" as="xs:integer?" select="index-of($codepoints, $percentCP)[1]"/>
@@ -126,8 +132,9 @@
         <xsl:sequence select="if ($percentPos eq $minPos) then $percentPos else ()"/>
       </xsl:if>
     </xsl:variable>
-    <xsl:sequence select="if ($resolvedPos) then substring($text, $resolvedPos + 1) else $text"/>
-    
+    <xsl:variable name="preamble" as="xs:string" select="if ($resolvedPos) then substring($text, 1, $resolvedPos - 1) => normalize-space() else ''"/>
+    <xsl:variable name="main" as="xs:string" select="if ($resolvedPos) then substring($text, $resolvedPos + 1) else $text"/>
+    <xsl:sequence select="$preamble, $main"/>
   </xsl:function>
   
   <xsl:variable name="regex" as="xs:string" select="'Q\{[^\{]*\}'"/>
