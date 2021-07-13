@@ -13,6 +13,7 @@ export class NodeKernel {
 	private nodeRuntime: cp.ChildProcess | undefined;
 	private outputBuffer = '';	// collect output here
 	private hasRuntimeError = false;
+	private outputKeys = '';
 	private tmpDirectory?: string;
 
 	public async start() {
@@ -32,6 +33,9 @@ export class NodeKernel {
 					} else if (dataStr.includes('\nUncaught')) {
 						this.hasRuntimeError = true;
 						this.outputBuffer += dataStr;
+					} else if (dataStr.includes('#keys#')) {
+						this.outputKeys = dataStr.substring(7);
+						console.log('outputKeys ======', this.outputKeys);
 					} else {
 						this.outputBuffer += dataStr;
 					}
@@ -53,11 +57,18 @@ export class NodeKernel {
 		const cellPath = cell.document.languageId === 'xpath' ? this.dumpCell(cell) : this.dumpCell(cell); // TODO: dumpJSCell
 		if (cellPath && this.nodeRuntime && this.nodeRuntime.stdin) {
 			this.outputBuffer = '';
+			this.outputKeys = '';
 			this.hasRuntimeError = false;
 
 			this.nodeRuntime.stdin.write(`.load ${cellPath}\n`);
 			while (this.outputBuffer === '') {
 				await this.sleep(100);
+			}
+			if (!this.hasRuntimeError) {
+				this.nodeRuntime.stdin.write(`globalVariables.getKeysJSON()\n`);
+				while (this.outputKeys === '') {
+					await this.sleep(100);
+				}
 			}
 		
 			if (this.hasRuntimeError) {
@@ -172,6 +183,9 @@ console.log(prevResult);
 					}
 					getKeys = () => {
 						return this.keys;
+					}
+					getKeysJSON = () => {
+						return '#keys#' + JSON.stringify(this.keys);
 					}
 					getVariables = () => {
 						return this.variables;
