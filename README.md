@@ -1,11 +1,11 @@
 # vscode-xpath-notebook
 Visual Studio Code notebook extension for XPath 3.1
 
-# XPath Notebook Features
+# DeltaXML's XPath Notebook Features
 
 | Feature  | Details |
 | ------- | ------- |
-| **XPath 3.1**    | See W3C specifications for [XPath 3.1](https://www.w3.org/TR/xpath-31/#id-introduction)
+| **XPath 3.1 Compatible**    | See W3C specifications for [XPath 3.1](https://www.w3.org/TR/xpath-31/#id-introduction)
 | **Syntax Highlighting**   | Fast and precise - using [Semantic Highlighting](https://code.visualstudio.com/api/language-extensions/semantic-highlight-guide) exclusively
 | **Code Formatting**       | For multi-line XPath expressions - as you type or on save
 | **Code Diagnostics**      | For XPath Syntax, variable/param references, functions etc.
