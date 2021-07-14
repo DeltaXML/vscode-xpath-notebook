@@ -88,6 +88,7 @@ export class NodeKernel {
 
 			const cellUri = cell.document.uri;
 			let cellText = cell.document.getText();
+			cellText = cellText.replaceAll('\\', '\\\\');
 			cellText = cellText.replaceAll('\`', '\\`');
 			if (cellUri.scheme === 'vscode-notebook-cell') {
 				// set context
