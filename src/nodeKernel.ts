@@ -198,7 +198,6 @@ console.log(prevResult);
 					}
 				}
 				const globalVariables = new GlobalVariables();
-				globalVariables.setVariable('test', 'hello world');
 				`;
 			fs.writeFileSync(saxonLoaderPath, script);
 			return saxonLoaderPath;

@@ -39,6 +39,7 @@ export class XBookController {
       }
       console.log('variableNames');
       console.log(this.nodeKernel.getVariableNames());
+      vscode.commands.executeCommand<void>('xslt-xpath.setVariableNames', this.nodeKernel.getVariableNames());
     }
 
     private _interrupt() {
