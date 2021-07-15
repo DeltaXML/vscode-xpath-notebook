@@ -37,6 +37,8 @@ export class XBookController {
       for (let cell of cells) {
         await this._doExecution(cell);
       }
+      console.log('variableNames');
+      console.log(this.nodeKernel.getVariableNames());
     }
 
     private _interrupt() {

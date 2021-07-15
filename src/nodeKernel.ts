@@ -34,7 +34,8 @@ export class NodeKernel {
 						this.hasRuntimeError = true;
 						this.outputBuffer += dataStr;
 					} else if (dataStr.includes('#keys#')) {
-						this.outputKeys = dataStr.substring(7);
+						// remove prefix and surrounding ' chars
+						this.outputKeys = dataStr.substring(7, dataStr.length - 2);
 					} else {
 						this.outputBuffer += dataStr;
 					}
@@ -149,6 +150,10 @@ console.log(prevResult);
 			return Promise.resolve(this.outputBuffer);
 		}
 		throw new Error('Evaluation failed');
+	}
+
+	public getVariableNames() {
+		return this.outputKeys === ''? [] : JSON.parse(this.outputKeys);
 	}
 
 	/**
