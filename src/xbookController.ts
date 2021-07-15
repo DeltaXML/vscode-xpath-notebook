@@ -29,13 +29,13 @@ export class XBookController {
       this.nodeKernel = new NodeKernel();
     }
   
-    private _execute(
+    private async _execute(
       cells: vscode.NotebookCell[],
       _notebook: vscode.NotebookDocument,
       _controller: vscode.NotebookController
-    ): void {
+    ): Promise<void> {
       for (let cell of cells) {
-        this._doExecution(cell);
+        await this._doExecution(cell);
       }
     }
 
