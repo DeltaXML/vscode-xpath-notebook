@@ -62,4 +62,39 @@ For XPath Notebooks the Output cell type is JSON text. This allows XPath maps, a
 
 *Sample JSON output cell showing special syntax highlighting for XML nodes*
 
+## Add NoteBook Context Variables
+
+XPath expressions in code cells can reference the results of other code cells. The `$_` variable is always set to the result of the previously executed cell. If you want to assign the result of a cell to a specific XPath variable, use a special *XPath Prolog** as the first line.
+
+An XPath Prolog is separated from the XPath expression with the `%` character as this is not a valid XPath operator. The syntax for the prolog is: `variable = <name> %`, where `<name>` is the name of the variable to which we assign the evaluation result of the following XPath expression.
+
+## Problem Reporting
+
+XPath expressions in Code cells are checked against basic syntax rules. Also, variable names and namespace prefixes are also checked using the notebook context. Notebook context variable names are marked as invalid until the Code cell with the corresponding variable assignment is executed.
+
+## Auto-completion
+
+Auto-completion is available When editing inside Code cells. Auto-completion is triggered for XPath functions and variable names. The variable names list will include Notebook context variables only once the corresponding cells have been evaluated.
+
+
+# Implementation Detail
+
+## Evaluation
+
+The XPath Notebook uses the [NodeJS REPL](https://nodejs.org/api/repl.html#repl_the_node_js_repl) to execute XPath cells. The [Saxon-JS](https://www.npmjs.com/package/saxon-js) NPM module from [Saxonica](https://www.saxonica.com/saxon-js/documentation/index.html) is pre-installed with the extension.
+
+To evaluate an XPath expression the `SaxonJS.transform` function invoked via the NodeJS REPL. The XSLT used in the transorm is a compiled *SEF* file, the XPath expression and evaluation context are passed as XSLT parameters. 
+
+Additional namespace bindings are added by the XSLT to the context node for '`array`', '`map`'... prefixes. The XSLT converts the result of an `xsl:evaluate` intruction to the XML representation for JSON by applying templates to the result. The `JSON XML` is then converted to JSON using the `xml-to-json` XPath function.
+
+Prior to evaluation, the XSLT separates any XPath Prolog from the expression. If a variable assignment is found in the prolog, the `ixsl:call` extension function is used to invoke a `setVariable` function on a JavaScript object passed as an XSLT parameter via the API.
+
+`ixsl:get` and `ixsl:call` extension functions are used on the JavaScript object passed as an XSLT parameter to fetch the set of variables added to the Notexbook context by evaluation of previous Code cells.
+
+## Code Editing Features
+
+All XPath code editing features are provided by DeltaXML's companion [XSLT/XPath for Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=deltaxml.xslt-xpath) extension - installed automatically with the XPath Notebook extension.
+
+
+
 
