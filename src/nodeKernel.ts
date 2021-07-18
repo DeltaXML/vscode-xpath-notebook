@@ -118,8 +118,6 @@ export class NodeKernel {
 									}
 							 });
 							 prevResult = '' + resultTransform.principalResult;
-							 prevResult = JSON.parse(prevResult);
-							 prevResult = JSON.stringify(prevResult, null, 4);
 `
 				data += `
 console.log(prevResult);
