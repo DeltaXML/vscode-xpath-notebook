@@ -66,7 +66,13 @@ For XPath Notebooks the Output cell type is JSON text. This allows XPath maps, a
 
 XPath expressions in code cells can reference the results of other code cells. The `$_` variable is always set to the result of the previously executed cell. If you want to assign the result of a cell to a specific XPath variable, use a special *XPath Prolog** as the first line.
 
-An XPath Prolog is separated from the XPath expression with the `%` character as this is not a valid XPath operator. The syntax for the prolog is: `variable = <name> %`, where `<name>` is the name of the variable to which we assign the evaluation result of the following XPath expression.
+An XPath Prolog is separated from the XPath expression with the `%` character as this is not a valid XPath operator. The syntax for the prolog is: 
+```xml
+variable = <name> %
+```
+In the above, `<name>` is the name of the variable to which we assign the evaluation result of the following XPath expression.
+
+> *Note: The intension is to use the XPath Prolog for other features later.*
 
 ## Problem Reporting
 
@@ -74,8 +80,19 @@ XPath expressions in Code cells are checked against basic syntax rules. Also, va
 
 ## Auto-completion
 
-Auto-completion is available When editing inside Code cells. Auto-completion is triggered for XPath functions and variable names. The variable names list will include Notebook context variables only once the corresponding cells have been evaluated.
+Auto-completion is available when editing inside Code cells. Auto-completion is triggered for XPath functions and variable names. The variable names list will include Notebook context variables only once the corresponding cells have been evaluated.
 
+## Choosing Cell Output Type
+
+Currently XPath Notebooks support two output types:
+ - The default output type is JSON (though we use the x-javascript mime-type to allow custom semantic highlighting)
+ - The secondary output type is a basic HTML table (suitable only for small data-sets)
+
+ To select an alternative output type, press the ![consolidated-button](consolidated-button.png) (consolidated) output button or the ![button](button.png) (normal) output button shown to the left of the output cell. Then select the `text/html` mime-type. *(See the note below to see how to control what button is shown)*.
+
+![html table](html-output-cell.png)
+
+> *Note: A Notebook Layout setting (`@tag:notebookLayout consolidated output button`) control whether you see a 'consolidated' or 'normal' button alongside the Notbook output cell. For this extension, it's more convenient to disable the 'consolidated' button.*
 
 # Implementation Detail
 
@@ -91,7 +108,7 @@ Prior to evaluation, the XSLT separates any XPath Prolog from the expression. If
 
 `ixsl:get` and `ixsl:call` extension functions are used on the JavaScript object passed as an XSLT parameter to fetch the set of variables added to the Notexbook context by evaluation of previous Code cells.
 
-## Code Editing Features
+# XPath Code Editing Features
 
 All XPath code editing features are provided by DeltaXML's companion [XSLT/XPath for Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=deltaxml.xslt-xpath) extension - installed automatically with the XPath Notebook extension.
 
