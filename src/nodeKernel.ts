@@ -101,6 +101,7 @@ export class NodeKernel {
 					} catch(error) {
 						throw new Error('Notebook Error: Most recent editor should host a valid XML file:\\n${ExtensionData.lastEditorUri}');
 					}
+					globalVariables.staticBaseURI = '${ExtensionData.getStaticBaseUri()}';
 					`;
 				}
 
@@ -174,6 +175,7 @@ console.log(prevResult);
 				const SaxonJS = require(${escapedSlashPath});
 				let prevResult = [];
 				class GlobalVariables {
+					staticBaseURI = '';
 					variables = {};
 					keys = [];
 					setVariable = (name, value) => {

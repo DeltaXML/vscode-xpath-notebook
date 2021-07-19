@@ -23,6 +23,8 @@
   <xsl:variable name="doubleQuoteCP" as="xs:integer" select="string-to-codepoints('&quot;')[1]"/>
   
   <xsl:variable name="xpathVariableNames" select="ixsl:get($this, 'keys')"/>
+  <xsl:variable name="staticBaseURI" as="xs:string" select="ixsl:get($this, 'staticBaseURI')"/>
+  
   <xsl:variable name="xpathVariableMap" as="map(*)">
     <xsl:map>
       <xsl:for-each select="$xpathVariableNames">
@@ -104,6 +106,7 @@
       context-item="$doc"
       namespace-context="$contextNsDoc"
       with-params="$xpathVariableMap"
+      base-uri="{$staticBaseURI}"
       >
     </xsl:evaluate>
   </xsl:function>
