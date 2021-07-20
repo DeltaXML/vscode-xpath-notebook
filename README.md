@@ -86,9 +86,13 @@ In the above, `<name>` is the name of the variable to which we assign the evalua
 
 > *Note: The intension is to use the XPath Prolog for other features later.*
 
+In the example below, the result of the `$cities` variable declared in cell `[4]` is used when cell `[5]` is executed:
+
+![cell variables](cell-variables.png)
+
 ## Problem Reporting
 
-XPath expressions in Code cells are checked against basic syntax rules. Also, variable names and namespace prefixes are also checked using the notebook context. Notebook context variable names are marked as invalid until the Code cell with the corresponding variable assignment is executed.
+XPath expressions in Code cells are checked against basic syntax rules. Also, variable names and namespace prefixes are checked using the evaluation context (described above). References to Notebook context variables are marked as invalid until the Code cell with the corresponding variable assignment is executed.
 
 ## Auto-completion
 
@@ -96,9 +100,14 @@ Auto-completion is available when editing inside Code cells. Auto-completion is 
 
 ## Choosing Cell Output Type
 
-Currently XPath Notebooks support two output types:
- - The default output type is JSON (though we use the x-javascript mime-type to allow custom semantic highlighting)
- - The secondary output type is a basic HTML table (suitable only for small data-sets)
+Currently XPath Notebooks supports three output types:
+
+| Mime-type  | Details |
+| ------- | ------- |
+| **text/x‑javascript** | The default. Actual content is JSON but uses this mime-type for special syntax highlighting of XML nodes
+| **text/html** | suitable for small data-sets (< 1MB) shows results in tabular form
+| **application/json** | for advanced rendering from 3rd party VS Code extensions like [VSCode Data Table](https://github.com/RandomFractals/vscode-data-table) 
+
 
  To select an alternative output type, press the ![consolidated-button](consolidated-button.png) (consolidated) output button or the ![button](button.png) (normal) output button shown to the left of the output cell. Then select the `text/html` mime-type. *(See the note below to see how to control what button is shown)*.
 
