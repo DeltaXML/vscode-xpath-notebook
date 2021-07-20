@@ -15,7 +15,7 @@ A Visual Studio Code notebook extension for XPath 3.1. XPath notebooks can be us
 | **Syntax Highlighting**   | Fast and precise - using [Semantic Highlighting](https://code.visualstudio.com/api/language-extensions/semantic-highlight-guide) exclusively
 | **Code Formatting**       | For multi-line XPath expressions - as you type or on save
 | **Code Diagnostics**      | For XPath Syntax, variable/param references, functions etc.
-| **XPath Processing** | Using Saxon-JS running in a NodeJS REPL
+| **XPath Processing** | Using Saxonica's [Saxon-JS](https://www.saxonica.com/saxon-js/index.xml) running in a [NodeJS](https://nodejs.org/en/) REPL
 | **Auto-Completion**       | For XPath functions, variables, function parameters etc. 
 | **Color Theme Support**   | Tested with most popular color themes ([Semantic Highlighting]() must be enabled in settings) 
 | **Automated Evaluation Context**   | Sets context item, namespace context, context variables, last result variable
