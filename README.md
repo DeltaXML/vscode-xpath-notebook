@@ -1,6 +1,6 @@
 # XPath Notebook for Visual Studio Code
 
-A Visual Studio Code notebook extension for XPath 3.1. XPath notebooks can be used in a variety of different ways, for XML analysis and XPath learning and testing. 
+A Visual Studio Code notebook extension for XPath 3.1. XPath notebooks can be used for data analysis (particularly suitable for XML or JSON) or for XPath experimentation or learning. 
 
 ![Notebook Screenshot](notebook-vscode-small.png)
 
