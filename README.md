@@ -45,10 +45,22 @@ Notebook files are saved in Visual Studio Code in the usual way. For XPath Noteb
 ![empty notebook](empty-notebook.png)
 
 
-## Set the XML Context
+## The XPath Evaluation Context
 
 To set the evaluation context item for a notebook just open an XML file in Visual Studio Code. The document node of the most recently opened XML file is used for XPath expressions that expect a context node.
 
+Here is a summary of the evaluation context:
+
+| Definition  | Details |
+| ------- | ------- |
+| **Statically known namespaces** | for prefixes: `array`, `map`, `math`, `xs`, `xsl`|
+| **Dynamically known namespaces** | from root element of last opened XML file |
+| **Default element namespace** | any default namespace on root element of last opened XML file |
+| **In-scope variables** | `$_` for last cell output <br> variables declared in prolog of executed cells 
+| **Static Base URI** | the URI of the current XPath Notebook file
+| **Base URI** | the URI of the last opened XML file
+
+---
 ## Add and execute Notebook cells
 
 Press the '`+ Code`' or '`+ Markdown`' buttons to add Code or Markdown cells. To execute a cell, press `Ctrl-ENTER` on the keyboard or click on the 'execute' button alongside the cell. When a Code cell is executed the result is shown in the Output cell immediately below the current cell.
