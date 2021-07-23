@@ -1,5 +1,7 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
+import * as jsc from 'jsonc-parser'
+
 
 export class ExtensionData {
 	static extensionPath: string = '';
@@ -20,6 +22,18 @@ export class ExtensionData {
 	static setBaseUri(uri: vscode.Uri) {
 		const result = this.calcBaseUri(uri);
 		ExtensionData.baseUri = result;
+	}
+
+	static async getLastEditorText() {
+		if (this.lastEditorUri) {
+			return await vscode.workspace.fs.readFile(vscode.Uri.parse(this.lastEditorUri));
+		}
+	}
+
+	static isLastEditorTextValidJSON() {
+		if (this.lastEditorUri) {
+			const t = vscode.workspace.fs.readFile(vscode.Uri.parse(this.lastEditorUri));
+		}
 	}
 
 
