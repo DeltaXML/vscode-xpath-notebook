@@ -1,6 +1,8 @@
 # XPath Notebook for Visual Studio Code
 
-A Visual Studio Code notebook extension for XPath 3.1. XPath notebooks can be used for data analysis (particularly suitable for XML or JSON) or for XPath experimentation or learning. 
+A Visual Studio Code notebook extension for XPath 3.1. 
+
+XPath notebooks are particularly suitable for XML or JSON analysis or for XPath experimentation or learning. 
 
 ![Notebook Screenshot](notebook-vscode-small.png)
 
@@ -12,20 +14,22 @@ A Visual Studio Code notebook extension for XPath 3.1. XPath notebooks can be us
 | Feature  | Details |
 | ------- | ------- |
 | **XPath 3.1 Compatible**    | See W3C specifications for [XPath 3.1](https://www.w3.org/TR/xpath-31/#id-introduction)
+| **JSON or XML sources** | The context for XPath evaluation can be JSON or XML files
 | **Syntax Highlighting**   | Fast and precise - using [Semantic Highlighting](https://code.visualstudio.com/api/language-extensions/semantic-highlight-guide) exclusively
 | **Code Formatting**       | For multi-line XPath expressions - as you type or on save
 | **Code Diagnostics**      | For XPath Syntax, variable/param references, functions etc.
 | **XPath Processing** | Using Saxonica's [Saxon-JS](https://www.saxonica.com/saxon-js/index.xml) running in a [NodeJS](https://nodejs.org/en/) REPL
 | **Auto-Completion**       | For XPath functions, variables, function parameters etc. 
 | **Color Theme Support**   | Tested with most popular color themes ([Semantic Highlighting]() must be enabled in settings) 
-| **Automated Evaluation Context**   | Sets context item, namespace context, context variables, last result variable
+| **Evaluation Context**   | Sets context item, namespace context, context variables, last result variable
 | **Code Folding**          | Using indentation
 | **Notebook Context Variables**              | An **XPath Prologue** (e.g. ` variable = countries %` ) assigns the cell result to a notebook variable
 | **Last Result Variable**        | Use `$_` to reference the last evaluated notebook cell result
 | **Bracket Matching**      | For `()`, `{}`, and `[]`
 | **Hover assistance**      | Shows tooltips. Providing signatures and descriptions for all built-in XSLT and XPath
-| **JSON result format** | (mime-type: `text/x-javascript`) for maps, arrays etc. syntax-highlighter extended for node types
-| **Table result format** | (mime-type: `text/html`) shows maps, sequences, arrays or arrays of maps in a table 
+| **JSON text output** | View Code cell output with the JSON syntax - mime-type: `text/x-javascript`
+| **Table output** | View Code cell output as a simple table - mime-type: `text/html`
+| **External Renderer output** | View Code cell output with sophisticated 3rd-party renderers: `application/json`
 |||
 
 
@@ -35,7 +39,7 @@ DeltaXML's *XPath Notebook* extension adds comprehensive **XPath 3.1** support t
 
 A notebook comprises a set of notebooks cells. These cells can either be **Markdown cells** for narrative content or **Code cells** for a specific programming language.
 
-When a Code cell is executed, the result is rendered in an **Output cell** immediately below the current Code cell. The currently active **NotebookController** determines the output types that can be shown in the Output cell. Each output type will have a corresponding **NotebookRenderer** that is responsible for formatting the output type. For example, the result may be shown as JSON text or as an interactive HTML table.
+When a Code cell is executed, the result is rendered in an **Output cell** immediately below the current Code cell. The currently active **NotebookController** (also known as a **Kernel**) determines the output types that can be shown in the Output cell. Each output type will have a corresponding **NotebookRenderer** that is responsible for formatting the output type. For example, the result may be shown as JSON text, as an interactive table or an interactive graphical plot.
 
 ## Create and save a new XPath Notebook
 
@@ -47,18 +51,21 @@ Notebook files are saved in Visual Studio Code in the usual way. For XPath Noteb
 
 ## The XPath Evaluation Context
 
-To set the evaluation context item for a notebook just open an XML file in Visual Studio Code. The document node of the most recently opened XML file is used for XPath expressions that expect a context node.
+To set the evaluation context item for a notebook just open an XML or JSON file in Visual Studio Code.
+The context-item is the result of evaluating either [`doc($uri)`](https://www.w3.org/TR/xpath-functions-31/#func-doc) or 
+[`json-doc($uri)`](https://www.w3.org/TR/xpath-functions-31/#func-json-doc) respectively on the last opened file (excluding notebook files).
 
 Here is a summary of the evaluation context:
 
 | Definition  | Details |
 | ------- | ------- |
+| **Context Item** | [`doc($uri)`](https://www.w3.org/TR/xpath-functions-31/#func-doc) or [`json-doc($uri)`](https://www.w3.org/TR/xpath-functions-31/#func-json-doc) evaluated with last editor URI arg
 | **Statically known namespaces** | for prefixes: `array`, `map`, `math`, `xs`, `xsl`|
-| **Dynamically known namespaces** | from root element of last opened XML file |
+| **Dynamically known namespaces** | from root element of last opened file - if it was XML |
 | **Default element namespace** | any default namespace on root element of last opened XML file |
 | **In-scope variables** | `$_` for last cell output <br> variables declared in prolog of executed cells 
 | **Static Base URI** | the URI of the current XPath Notebook file
-| **Base URI** | the URI of the last opened XML file
+| **Base URI** | the URI of the last opened file - if it was XML
 
 ---
 ## Add and execute Notebook cells
@@ -106,8 +113,9 @@ Currently XPath Notebooks supports three output types:
 | ------- | ------- |
 | **text/x‑javascript** | The default. Actual content is JSON but uses this mime-type for special syntax highlighting of XML nodes
 | **text/html** | suitable for small data-sets (< 1MB) shows results in tabular form
-| **application/json** | for advanced rendering from 3rd party VS Code extensions like [VSCode Data Table](https://github.com/RandomFractals/vscode-data-table) 
+| **application/json** | for advanced rendering from 3rd party VS Code extensions like [RandomFractal's VSCode Data Table](https://github.com/RandomFractals/vscode-data-table) 
 
+> **Note**: RandomFractals Data Table renderer supports large data sets and provides column sort and data-type formatting.
 
  To select an alternative output type, press the ![consolidated-button](consolidated-button.png) (consolidated) output button or the ![button](button.png) (normal) output button shown to the left of the output cell. Then select the `text/html` mime-type. *(See the note below to see how to control what button is shown)*.
 
