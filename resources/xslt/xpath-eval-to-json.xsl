@@ -107,7 +107,7 @@
   </xsl:template>
   
   <xsl:function name="ext:evaluate" as="item()*">
-    <xsl:param name="doc" as="node()?"/>
+    <xsl:param name="doc" as="item()*"/>
     <xsl:param name="xpathText" as="xs:string"/>
     <xsl:evaluate 
       xpath="$xpathText"

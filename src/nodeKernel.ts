@@ -92,18 +92,11 @@ export class NodeKernel {
 			cellText = cellText.replaceAll('\\', '\\\\');
 			cellText = cellText.replaceAll('\`', '\\`');
 			if (cellUri.scheme === 'vscode-notebook-cell') {
-				// set context
-				let contextScript = '';
-				if (ExtensionData.lastEditorUri) {
-					contextScript = `
-					try {
-						var context = SaxonJS.XPath.evaluate("doc('${ExtensionData.lastEditorUri}')");
-					} catch(error) {
-						throw new Error('Notebook Error: Most recent editor should host a valid XML file:\\n${ExtensionData.lastEditorUri}');
-					}
-					globalVariables.staticBaseURI = '${ExtensionData.getStaticBaseUri()}';
-					`;
-				}
+			// set context
+			let contextScript = '';
+				contextScript = `
+				globalVariables.staticBaseURI = '${ExtensionData.getStaticBaseUri()}';
+				`;
 
 				let data = contextScript;
 				data += "try {\n"
