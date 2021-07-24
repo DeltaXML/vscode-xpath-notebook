@@ -13,10 +13,13 @@
   <xsl:output method="text" indent="no"/>
   <xsl:mode on-no-match="shallow-copy"/>
   
-  <xsl:param name="eval-result" as="item()*" select="()"/>
   <xsl:param name="expression" as="xs:string"/>
   <xsl:param name="sourceURI" as="xs:string?"/>
   <xsl:param name="this" as="item()"/>
+  
+  <xsl:variable name="source.xml" static="yes" as="xs:integer" select="1"/>
+  <xsl:variable name="source.empty" static="yes" as="xs:integer" select="2"/>
+  <xsl:variable name="source.json" static="yes" as="xs:integer" select="3"/>
   
   <xsl:variable name="percentCP" as="xs:integer" select="string-to-codepoints('%')[1]"/>
   <xsl:variable name="singleQuoteCP" as="xs:integer" select="string-to-codepoints('''')[1]"/>
@@ -33,10 +36,13 @@
     </xsl:map>
   </xsl:variable>
   
-  <xsl:variable name="sourceDoc" as="document-node()?" select="if ($sourceURI and $sourceURI ne 'undefined') then doc($sourceURI) else ()"/>
+  <xsl:variable name="testedSourceURIParts" as="item()*" select="ext:testSourceURI()"/>
+  <xsl:variable name="sourceType" as="xs:integer" select="$testedSourceURIParts[1]"/>
+  <xsl:variable name="sourceDoc" as="item()*" select="$testedSourceURIParts[2]"/>
+  
   <xsl:variable name="contextNsDoc" as="element()" select="ext:createContextElement()"/>
   <xsl:variable name="xmlnsMap" as="map(*)?" 
-    select="if ($sourceDoc) then ext:getURItoPrefixMap($sourceDoc/*) else ()"/>
+    select="if ($sourceType eq $source.empty) then ext:getURItoPrefixMap($sourceDoc/*) else ()"/>
   
   <xsl:variable name="nsContextElement" as="element()">
     <root xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -47,9 +53,29 @@
       />
   </xsl:variable>
   
+  <xsl:function name="ext:testSourceURI" as="item()*">
+    <xsl:choose>
+      <xsl:when test="$sourceURI and $sourceURI ne 'undefined'">
+        <xsl:try>
+          <xsl:sequence select="$source.xml, doc($sourceURI)"/>
+          <xsl:catch>
+            <xsl:try>
+              <xsl:sequence select="$source.json, json-doc($sourceURI)"/>
+              <xsl:catch select="$source.empty, ()"/>
+            </xsl:try>
+          </xsl:catch>
+        </xsl:try>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:sequence select="$source.empty, ()"/>
+      </xsl:otherwise>
+    </xsl:choose>
+    
+  </xsl:function>
+  
   <xsl:function name="ext:createContextElement" as="element()">
     <xsl:choose>
-      <xsl:when test="$sourceDoc">
+      <xsl:when test="$sourceType eq $source.xml">
         <root>
           <xsl:sequence select="$sourceDoc/*/namespace-node()"/>
           <xsl:namespace name="array" select="'http://www.w3.org/2005/xpath-functions/array'"/>
