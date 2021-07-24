@@ -20,6 +20,7 @@
   <xsl:variable name="source.xml" static="yes" as="xs:integer" select="1"/>
   <xsl:variable name="source.empty" static="yes" as="xs:integer" select="2"/>
   <xsl:variable name="source.json" static="yes" as="xs:integer" select="3"/>
+  <xsl:variable name="emptyArrayXML" as="element()"><array/></xsl:variable>
   
   <xsl:variable name="percentCP" as="xs:integer" select="string-to-codepoints('%')[1]"/>
   <xsl:variable name="singleQuoteCP" as="xs:integer" select="string-to-codepoints('''')[1]"/>
@@ -42,7 +43,7 @@
   
   <xsl:variable name="contextNsDoc" as="element()" select="ext:createContextElement()"/>
   <xsl:variable name="xmlnsMap" as="map(*)?" 
-    select="if ($sourceType eq $source.empty) then ext:getURItoPrefixMap($sourceDoc/*) else ()"/>
+    select="if ($sourceType eq $source.xml) then ext:getURItoPrefixMap($sourceDoc/*) else ()"/>
   
   <xsl:variable name="nsContextElement" as="element()">
     <root xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -69,8 +70,7 @@
       <xsl:otherwise>
         <xsl:sequence select="$source.empty, ()"/>
       </xsl:otherwise>
-    </xsl:choose>
-    
+    </xsl:choose>   
   </xsl:function>
   
   <xsl:function name="ext:createContextElement" as="element()">
@@ -97,12 +97,12 @@
     <xsl:variable name="assignVarName" as="xs:string?" select="if (count($preambleParts) eq 2 and $preambleParts[1] eq 'variable') then $preambleParts[2] else ()"/>
     <xsl:variable name="cleanedExpression" as="xs:string" select="$expressionParts[2]"/>
     <xsl:variable name="result" as="item()*" select="ext:evaluate($sourceDoc, $cleanedExpression)"/>
-    <!-- <xsl:sequence select="ixsl:apply($set-fn, ['mytest', 'hello'])"/> -->
+
     <xsl:if test="$assignVarName">
       <xsl:sequence select="ixsl:call($this, 'setVariable', [$assignVarName, $result])"/>
     </xsl:if>
     <xsl:sequence select="ixsl:call($this, 'setVariable', ['_', $result])"/>
-    <xsl:variable name="jsonXML" select="ext:convertArrayEntry($result)"/>
+    <xsl:variable name="jsonXML" select="if (exists($result)) then ext:convertArrayEntry($result) else $emptyArrayXML"/>
     <xsl:sequence select="xml-to-json($jsonXML)"/>
   </xsl:template>
   
