@@ -64,13 +64,6 @@
     </xsl:choose>
   </xsl:function>
   
-  <xsl:variable name="test1" select="map { 'values': ['uno', 'dos','tres', true(), (), 24] }"/>
-  <xsl:variable name="test2" select="map {'abc': 'gloucester', 'def': (), 'deep': map { 'lvl2': 22 } }"/>
-  <xsl:variable name="test3" select="[ 'spurs', 'bristol city', (), 'man united', array { 5,10,15 } ]"/>
-  <xsl:variable name="test4" select="/*/*"/>
-  <xsl:variable name="test5" select="map {'node': /*/*/@*}"/>
-  <xsl:variable name="test6" as="xs:string" select="'base-uri(), array:size([1,2,3]), /books'"/>
-  
   <xsl:template name="main">
     <xsl:variable name="expressionParts" as="xs:string*" select="ext:extractPreamble($expression)"/>
     <xsl:variable name="preamble" as="xs:string" select="$expressionParts[1]"/>
@@ -83,17 +76,6 @@
       <xsl:sequence select="ixsl:call($this, 'setVariable', [$assignVarName, $result])"/>
     </xsl:if>
     <xsl:sequence select="ixsl:call($this, 'setVariable', ['_', $result])"/>
-    <xsl:variable name="jsonXML" select="ext:convertArrayEntry($result)"/>
-    <xsl:sequence select="xml-to-json($jsonXML)"/>
-  </xsl:template>
-  
-  <xsl:template name="converted">
-    <xsl:variable name="jsonXML" select="ext:convertArrayEntry($eval-result)"/>
-    <xsl:sequence select="$jsonXML"/>
-  </xsl:template>
-  
-  <xsl:template name="test">
-    <xsl:variable name="result" as="item()*" select="ext:evaluate($sourceDoc, $test6)"/>
     <xsl:variable name="jsonXML" select="ext:convertArrayEntry($result)"/>
     <xsl:sequence select="xml-to-json($jsonXML)"/>
   </xsl:template>
