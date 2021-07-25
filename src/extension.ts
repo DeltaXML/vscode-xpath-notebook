@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+import { CellStatusProvider } from './cellStatusProvider';
 import { ExtensionData } from './extensionData';
 import { JsonDefinitionProvider } from './jsonDefinitionProvider';
 import { JSONHoverProvider } from './jsonHoverProvider';
@@ -9,6 +10,7 @@ import { XpathResultTokenProvider } from './xpathResultTokenProvider';
 export function activate(context: vscode.ExtensionContext) {
 	ExtensionData.extensionPath = context.extensionPath;
 
+
   context.subscriptions.push(
 		vscode.languages.registerDocumentSemanticTokensProvider({ language: 'javascript' }, new XpathResultTokenProvider(), XpathResultTokenProvider.getLegend()),
 		//vscode.languages.registerDefinitionProvider({ language: 'javascript' }, new JsonDefinitionProvider()),
@@ -16,6 +18,7 @@ export function activate(context: vscode.ExtensionContext) {
 		vscode.window.onDidChangeActiveTextEditor(editor => {
 			ExtensionData.registerEditor(editor);
 		}),
+		vscode.notebooks.registerNotebookCellStatusBarItemProvider('xbook', new CellStatusProvider()),
     vscode.workspace.registerNotebookSerializer('xbook', new XBookSerializer()),
     new XBookController()
   );

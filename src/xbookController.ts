@@ -2,6 +2,7 @@ import * as vscode from 'vscode';
 import { NotebookController } from 'vscode';
 import { HtmlTables } from './htmlTables';
 import { NodeKernel } from './nodeKernel';
+import { ExtensionData } from './extensionData';
 
 export class XBookController {
     readonly controllerId = 'xbook-id';
@@ -63,12 +64,18 @@ export class XBookController {
         const resultObj = JSON.parse(result);
         const jsonTextResult = JSON.stringify(resultObj, null, 4);
         const htmlString = HtmlTables.constructTableForObject(resultObj);
+        const itemCount = Array.isArray(resultObj)? resultObj.length : 1;
+        const metadata = {
+          'xpathContext': ExtensionData.getLastEditorFileName(),
+          'resultCount': itemCount        
+        };
+
         execution.replaceOutput([
         new vscode.NotebookCellOutput([
           vscode.NotebookCellOutputItem.text(jsonTextResult, 'text/x-javascript'),
           vscode.NotebookCellOutputItem.json(resultObj, 'application/json'),
           vscode.NotebookCellOutputItem.text(htmlString, 'text/html')
-        ])
+        ], metadata)
       ]);
       } else {
         execution.replaceOutput([
