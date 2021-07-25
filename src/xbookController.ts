@@ -1,5 +1,4 @@
 import * as vscode from 'vscode';
-import { NotebookController } from 'vscode';
 import { HtmlTables } from './htmlTables';
 import { NodeKernel } from './nodeKernel';
 import { ExtensionData } from './extensionData';
