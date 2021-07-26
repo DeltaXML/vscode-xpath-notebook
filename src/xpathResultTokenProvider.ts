@@ -8,7 +8,7 @@ export interface BaseToken {
     tokenType: number;
 }
 
-enum LineType {
+export enum LineType {
     Array,
     Object,
     None
@@ -65,10 +65,12 @@ export class XpathResultTokenProvider implements vscode.DocumentSemanticTokensPr
             const padding = line.length - tLine.length;
             let char = tLine.charAt(0);
             const isLineStartString = char === '"';
-            if (isLineStartString) {
-                const cp = tLine.codePointAt(1);
-                char = cp? String.fromCodePoint(cp) : '';
-            }
+            if (isLineStartString) {       
+                char = tLine.charAt(tLine.length - 1);
+                if (char !== '[' && char !== '{') {
+                  char = tLine.charAt(1);
+                }
+              }
             switch (char) {
                 case '\u1680':
                     if (tLine.charAt(2) === '/') {

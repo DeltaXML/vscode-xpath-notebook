@@ -3,6 +3,7 @@ import { CellStatusProvider } from './cellStatusProvider';
 import { ExtensionData } from './extensionData';
 import { JsonDefinitionProvider } from './jsonDefinitionProvider';
 import { JSONHoverProvider } from './jsonHoverProvider';
+import { LinkProvider } from './linkProvider';
 import { XBookController } from './xbookController';
 import { XBookSerializer } from './xbookSerializer';
 import { XpathResultTokenProvider } from './xpathResultTokenProvider';
@@ -18,6 +19,7 @@ export function activate(context: vscode.ExtensionContext) {
 		vscode.window.onDidChangeActiveTextEditor(editor => {
 			ExtensionData.registerEditor(editor);
 		}),
+		vscode.languages.registerDocumentLinkProvider({ language: 'javascript' }, new LinkProvider()),
 		vscode.notebooks.registerNotebookCellStatusBarItemProvider('xbook', new CellStatusProvider()),
     vscode.workspace.registerNotebookSerializer('xbook', new XBookSerializer()),
     new XBookController()
