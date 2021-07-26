@@ -30,6 +30,7 @@ XPath notebooks are particularly suitable for XML or JSON analysis or for XPath 
 | **JSON text output** | View Code cell output with the JSON syntax - mime-type: `text/x-javascript`
 | **Table output** | View Code cell output as a simple table - mime-type: `text/html`
 | **External Renderer output** | View Code cell output with sophisticated 3rd-party renderers: `application/json`
+| **Result node navigation** | Navigates to and highlights results nodes in the source document
 |||
 
 
@@ -72,10 +73,14 @@ Here is a summary of the evaluation context:
 
 Press the '`+ Code`' or '`+ Markdown`' buttons to add Code or Markdown cells. To execute a cell, press `Ctrl-ENTER` on the keyboard or click on the 'execute' button alongside the cell. When a Code cell is executed the result is shown in the Output cell immediately below the current cell.
 
-For XPath Notebooks the Output cell type is JSON text. This allows XPath maps, arrays and sequences to be represented in an intuitive way. If a result item is an XML node then the XPath for the node is shown with special syntax highlighting to differentiate it from a string value.
+For XPath Notebooks the default Output Cell type is JSON text. This allows XPath maps, arrays and sequences to be represented in an intuitive way. 
 
-> If you want to see the string values of XML nodes in the output cell
-> you should convert them to a string, for example, using the `string()` XPath string contructor function, e.g. `/books/book/@author! string()`
+### Result node navigation
+
+If a result item is an XML node the XPath for the node is shown with special syntax highlighting. Result nodes can be navigated easily: first press and hold the `CMD` button and then click on the XPath in the output cell. The corresponding source XML document will be shown alongside the XPath Notebook, with the corresponding node highlighted.
+
+> To view the string values of XML nodes in the output cell
+> you should convert them to a string, for example, using the `string()` function, for example: `/books/book/@author! string()`
 
 ![empty notebook](json-output.png)
 
