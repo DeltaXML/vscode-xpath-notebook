@@ -106,7 +106,6 @@ export class LinkProvider implements vscode.DocumentLinkProvider {
     }
     if (targetURI) {
       const nodePath = tLine.substring(propNameOffset + 2, spacePos);
-      console.log('nodePath', nodePath);
       const args = { xpath: nodePath, uri: targetURI.toString() }
       const argsString = encodeURIComponent(JSON.stringify(args));
       const commandURI = vscode.Uri.parse(`command:xslt-xpath.selectXPathInDocument?${argsString}`);
