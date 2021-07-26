@@ -97,7 +97,7 @@ export class LinkProvider implements vscode.DocumentLinkProvider {
     return links;
   }
 
-  private pushLinks(tLine: string, propNameOffset: number, padding: number, links: vscode.DocumentLink[], lineNum: number, line: string, targetURI: vscode.Uri) {
+  private pushLinks(tLine: string, propNameOffset: number, padding: number, links: vscode.DocumentLink[], lineNum: number, _line: string, targetURI: vscode.Uri) {
     let spacePos = tLine.indexOf(' ', 3 + propNameOffset);
     const pathStart = padding + 2;
     const endPos = tLine.endsWith(',') ? tLine.length - 2 : tLine.length - 1;
