@@ -66,7 +66,8 @@ export class XBookController {
         const itemCount = Array.isArray(resultObj)? resultObj.length : 1;
         const metadata = {
           'xpathContext': ExtensionData.getLastEditorFileName(),
-          'resultCount': itemCount        
+          'resultCount': itemCount,
+          'xpathContextUri': ExtensionData.lastEditorUri        
         };
 
         execution.replaceOutput([
