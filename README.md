@@ -30,7 +30,7 @@ XPath notebooks are particularly suitable for XML or JSON analysis or for XPath 
 | **JSON text output** | View Code cell output with the JSON syntax - mime-type: `text/x-javascript`
 | **Table output** | View Code cell output as a simple table - mime-type: `text/html`
 | **External Renderer output** | View Code cell output with sophisticated 3rd-party renderers: `application/json`
-| **Result node navigation** | Navigates to and highlights results nodes in the source document
+| **XML Node navigation** | Navigates to and highlights XML result nodes in the source document
 |||
 
 
