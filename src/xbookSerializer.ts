@@ -31,7 +31,7 @@ export class XBookSerializer implements vscode.NotebookSerializer {
       const cells: vscode.NotebookCellData[] = []
       for (let index = 0; index < raw.length; index++) {
         const cellData = raw[index];
-        if (cellData.kind && cellData.value && cellData.language) {
+        if (cellData.kind !== undefined && cellData.value !== undefined && cellData.language !== undefined) {
           cells.push(new vscode.NotebookCellData(cellData.kind, cellData.value, cellData.language));
         }  else {
           vscode.window.showErrorMessage("Error parsing 'xbook' JSON: missing 'kind', 'value' or 'language' property");
