@@ -12,19 +12,34 @@ export class XBookSerializer implements vscode.NotebookSerializer {
     _token: vscode.CancellationToken
   ): Promise<vscode.NotebookData> {
     var contents = new TextDecoder().decode(content);
+    if (contents.length === 0) {
+      return new vscode.NotebookData([]);
+    }
 
     let raw: RawNotebookCell[];
     try {
       raw = <RawNotebookCell[]>JSON.parse(contents);
     } catch {
-      raw = [];
+      vscode.window.showErrorMessage("Unable to parse 'xbook' JSON");
+      return new vscode.NotebookData([]);
     }
 
-    const cells = raw.map(
-      item => new vscode.NotebookCellData(item.kind, item.value, item.language)
-    );
-
-    return new vscode.NotebookData(cells);
+    if (!Array.isArray(raw)) {
+      vscode.window.showErrorMessage("Error parsing 'xbook' JSON: expected array");
+      return new vscode.NotebookData([]);
+    } else {
+      const cells: vscode.NotebookCellData[] = []
+      for (let index = 0; index < raw.length; index++) {
+        const cellData = raw[index];
+        if (cellData.kind && cellData.value && cellData.language) {
+          cells.push(new vscode.NotebookCellData(cellData.kind, cellData.value, cellData.language));
+        }  else {
+          vscode.window.showErrorMessage("Error parsing 'xbook' JSON: missing 'kind', 'value' or 'language' property");
+          return new vscode.NotebookData([]);
+        }      
+      }
+      return new vscode.NotebookData(cells);
+    }
   }
 
   async serializeNotebook(
