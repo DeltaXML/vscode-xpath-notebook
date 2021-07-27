@@ -17,12 +17,12 @@ XPath notebooks are particularly suitable for XML or JSON analysis or for XPath 
 | **XPath Processing** | Requires [Node.js](https://nodejs.org/en/) to be installed. Uses Saxonica's [Saxon-JS Processor](https://www.saxonica.com/saxon-js/index.xml)
 | **JSON or XML sources** | The context for XPath evaluation can be JSON or XML files
 | **Syntax Highlighting**   | Fast and precise - using [Semantic Highlighting](https://code.visualstudio.com/api/language-extensions/semantic-highlight-guide) exclusively
-| **Code Formatting**       | For multi-line XPath expressions - as you type or on save
-| **Code Diagnostics**      | For XPath Syntax, variable/param references, functions etc.
-| **Auto-Completion**       | For XPath functions, variables, function parameters etc. 
+| **Code Formatting**       | For multi-line XPath expressions, 'as-you-type' or 'on-save'
+| **Code Diagnostics**      | For XPath Syntax, variable/param references, functions, namespace-prefixes etc.
+| **Auto-Completion**       | For XPath functions, variables, function-parameters etc. 
 | **Color Theme Support**   | Tested with most popular color themes ([Semantic Highlighting]() must be enabled in settings) 
 | **Evaluation Context**   | Sets context item, namespace context, context variables, last result variable
-| **Code Folding**          | Using indentation
+| **Code Folding**          | The indentation of XPath expressions is used to determine fold regions
 | **Notebook Context Variables**              | An **XPath Prologue** (e.g. ` variable = countries %` ) assigns the cell result to a notebook variable
 | **Last Result Variable**        | Use `$_` to reference the last evaluated notebook cell result
 | **Bracket Matching**      | For `()`, `{}`, and `[]`
