@@ -11,7 +11,7 @@ export class CellStatusProvider implements vscode.NotebookCellStatusBarItemProvi
     let fName: string | undefined;
     if (op && op.metadata) {
       fName = op.metadata['xpathContext'];
-      const statusFname = fName? `File context: '${fName}'` : '(No evaluation context)' 
+      const statusFname = fName? `Source: '${fName}'` : '(No evaluation context)' 
       const item = new vscode.NotebookCellStatusBarItem(statusFname, vscode.NotebookCellStatusBarAlignment.Right);
       items.push(item);
 
