@@ -42,8 +42,8 @@
   <xsl:variable name="sourceDoc" as="item()*" select="$testedSourceURIParts[2]"/>
   
   <xsl:variable name="contextNsDoc" as="element()" select="ext:createContextElement()"/>
-  <xsl:variable name="xmlnsMap" as="map(*)?" 
-    select="if ($sourceType eq $source.xml) then ext:getURItoPrefixMap($sourceDoc/*) else ()"/>
+  <xsl:variable name="xmlnsMap" as="map(*)" 
+    select="if ($sourceType eq $source.xml) then ext:getURItoPrefixMap($sourceDoc/*) else map {}"/>
   
   <xsl:variable name="nsContextElement" as="element()">
     <root xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -108,13 +108,26 @@
   <xsl:function name="ext:evaluate" as="item()*">
     <xsl:param name="doc" as="item()*"/>
     <xsl:param name="xpathText" as="xs:string"/>
-    <xsl:evaluate 
-      xpath="$xpathText"
-      context-item="$doc"
-      namespace-context="$contextNsDoc"
-      with-params="$xpathVariableMap"
-      base-uri="{$staticBaseURI}"
-      />
+    
+    <xsl:choose>
+      <xsl:when test="$sourceType eq $source.xml">
+        <xsl:evaluate 
+          xpath="$xpathText"
+          context-item="$doc"
+          namespace-context="$contextNsDoc"
+          with-params="$xpathVariableMap"
+          base-uri="{$staticBaseURI}"
+          />
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:evaluate 
+          xpath="$xpathText"
+          context-item="$doc"
+          with-params="$xpathVariableMap"
+          base-uri="{$staticBaseURI}"
+          />
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:function>
   
   <xsl:function name="ext:getURItoPrefixMap" as="map(*)">
