@@ -26,9 +26,8 @@ Notebooks are primarily used in a Data Science context but are valuable also for
 | **Last Result Variable**        | Use `$_` to reference the last evaluated notebook cell result
 | **Bracket Matching**      | For `()`, `{}`, and `[]`
 | **Hover assistance**      | Shows tooltips. Providing signatures and descriptions for all built-in XSLT and XPath
-| **JSON text output** | View Code cell output with the JSON syntax - mime-type: `text/x-javascript`
-| **Table output** | View Code cell output as a simple table - mime-type: `text/html`
-| **External Renderer output** | View Code cell output with sophisticated 3rd-party renderers: `application/json`
+| **JSON output** | View Cell output with the JSON syntax (suitable for 3rd-party renderers) - mime-type: `application/json`
+| **Table output** | View Cell output as a simple table - mime-type: `text/html`
 | **XML Node navigation** | Navigates to and highlights XML result nodes in the source document
 |||
 
@@ -125,13 +124,12 @@ Auto-completion is available when editing inside Code cells. Auto-completion is 
 
 ## Choosing Cell Output Type
 
-Currently XPath Notebooks supports three output types:
+Currently XPath Notebooks supports two output types:
 
 | Mime-type  | Details |
 | ------- | ------- |
-| **text/x‑javascript** | The default. Actual content is JSON but uses this mime-type for special syntax highlighting of XML nodes
 | **text/html** | suitable for small data-sets (< 1MB) shows results in tabular form
-| **application/json** | for advanced rendering from 3rd party VS Code extensions like [RandomFractal's VSCode Data Table](https://github.com/RandomFractals/vscode-data-table) 
+| **application/json** | for JSON text view or advanced rendering from 3rd party VS Code extensions such as [RandomFractal's VSCode Data Table](https://github.com/RandomFractals/vscode-data-table) 
 
 > **Note**: RandomFractals Data Table renderer supports large data sets and provides column sort and data-type formatting.
 

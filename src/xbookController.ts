@@ -61,7 +61,7 @@ export class XBookController {
 
       if (isSuccess) {
         const resultObj = JSON.parse(result);
-        const jsonTextResult = JSON.stringify(resultObj, null, 4);
+        //const jsonTextResult = JSON.stringify(resultObj, null, 4);
         const htmlString = HtmlTables.constructTableForObject(resultObj);
         const itemCount = Array.isArray(resultObj)? resultObj.length : 1;
         const metadata = {
@@ -72,7 +72,7 @@ export class XBookController {
 
         execution.replaceOutput([
         new vscode.NotebookCellOutput([
-          vscode.NotebookCellOutputItem.text(jsonTextResult, 'text/x-javascript'),
+          // vscode.NotebookCellOutputItem.text(jsonTextResult, 'text/x-javascript'),
           vscode.NotebookCellOutputItem.json(resultObj, 'application/json'),
           vscode.NotebookCellOutputItem.text(htmlString, 'text/html')
         ], metadata)

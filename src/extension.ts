@@ -13,13 +13,13 @@ export function activate(context: vscode.ExtensionContext) {
 
 
   context.subscriptions.push(
-		vscode.languages.registerDocumentSemanticTokensProvider({ language: 'javascript' }, new XpathResultTokenProvider(), XpathResultTokenProvider.getLegend()),
+		vscode.languages.registerDocumentSemanticTokensProvider({ language: 'json' }, new XpathResultTokenProvider(), XpathResultTokenProvider.getLegend()),
 		//vscode.languages.registerDefinitionProvider({ language: 'javascript' }, new JsonDefinitionProvider()),
 		//vscode.languages.registerHoverProvider({ language: 'javascript' }, new JSONHoverProvider()),
 		vscode.window.onDidChangeActiveTextEditor(editor => {
 			ExtensionData.registerEditor(editor);
 		}),
-		vscode.languages.registerDocumentLinkProvider({ language: 'javascript' }, new LinkProvider()),
+		vscode.languages.registerDocumentLinkProvider({ language: 'json' }, new LinkProvider()),
 		vscode.notebooks.registerNotebookCellStatusBarItemProvider('xbook', new CellStatusProvider()),
     vscode.workspace.registerNotebookSerializer('xbook', new XBookSerializer()),
     new XBookController()
