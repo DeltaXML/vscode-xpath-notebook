@@ -76,13 +76,12 @@
   <xsl:function name="ext:createContextElement" as="element()">
     <xsl:choose>
       <xsl:when test="$sourceType eq $source.xml">
-        <root>
-          <xsl:sequence select="$sourceDoc/*/namespace-node()"/>
+        <xsl:copy select="$sourceDoc/*" copy-namespaces="yes">
           <xsl:namespace name="array" select="'http://www.w3.org/2005/xpath-functions/array'"/>
           <xsl:namespace name="map" select="'http://www.w3.org/2005/xpath-functions/map'"/>
           <xsl:namespace name="math" select="'http://www.w3.org/2005/xpath-functions/math'"/>
           <xsl:namespace name="xs" select="'http://www.w3.org/2001/XMLSchema'"/>
-        </root>
+        </xsl:copy>
       </xsl:when>
       <xsl:otherwise>
         <xsl:sequence select="$nsContextElement"/>
