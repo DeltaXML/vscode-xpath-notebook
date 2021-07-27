@@ -114,8 +114,7 @@
       namespace-context="$contextNsDoc"
       with-params="$xpathVariableMap"
       base-uri="{$staticBaseURI}"
-      >
-    </xsl:evaluate>
+      />
   </xsl:function>
   
   <xsl:function name="ext:getURItoPrefixMap" as="map(*)">
