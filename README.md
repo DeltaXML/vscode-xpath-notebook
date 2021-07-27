@@ -14,11 +14,11 @@ XPath notebooks are particularly suitable for XML or JSON analysis or for XPath 
 | Feature  | Details |
 | ------- | ------- |
 | **XPath 3.1 Compatible**    | See W3C specifications for [XPath 3.1](https://www.w3.org/TR/xpath-31/#id-introduction)
+| **XPath Processing** | Requires [Node.js](https://nodejs.org/en/) to be installed. Uses Saxonica's [Saxon-JS Processor](https://www.saxonica.com/saxon-js/index.xml)
 | **JSON or XML sources** | The context for XPath evaluation can be JSON or XML files
 | **Syntax Highlighting**   | Fast and precise - using [Semantic Highlighting](https://code.visualstudio.com/api/language-extensions/semantic-highlight-guide) exclusively
 | **Code Formatting**       | For multi-line XPath expressions - as you type or on save
 | **Code Diagnostics**      | For XPath Syntax, variable/param references, functions etc.
-| **XPath Processing** | Using Saxonica's [Saxon-JS](https://www.saxonica.com/saxon-js/index.xml) running in a [NodeJS](https://nodejs.org/en/) REPL
 | **Auto-Completion**       | For XPath functions, variables, function parameters etc. 
 | **Color Theme Support**   | Tested with most popular color themes ([Semantic Highlighting]() must be enabled in settings) 
 | **Evaluation Context**   | Sets context item, namespace context, context variables, last result variable
@@ -34,7 +34,7 @@ XPath notebooks are particularly suitable for XML or JSON analysis or for XPath 
 |||
 
 
-## Introduction
+# Introduction
 
 DeltaXML's *XPath Notebook* extension adds comprehensive **XPath 3.1** support to Visual Studio Code's built-in notebooks. Visual Studio Code notebooks provide similar features to other popular notebook interfaces like the  [Juypter Notebook](https://jupyterlab.readthedocs.io/en/latest/user/notebook.html#notebook).
 
@@ -42,7 +42,15 @@ A notebook comprises a set of notebooks cells. These cells can either be **Markd
 
 When a Code cell is executed, the result is rendered in an **Output cell** immediately below the current Code cell. The currently active **NotebookController** (also known as a **Kernel**) determines the output types that can be shown in the Output cell. Each output type will have a corresponding **NotebookRenderer** that is responsible for formatting the output type. For example, the result may be shown as JSON text, as an interactive table or an interactive graphical plot.
 
-## Create and save a new XPath Notebook
+# Getting Started
+
+## STEP 1: Setup the XPath Processor
+
+To evaluate XPath expressions, the XPath Notebook requires **Node.js** to be installed. The Node.js installer is available for download from:
+
+ https://nodejs.org/en/.
+
+## STEP 2: Create and save a new XPath Notebook
 
 In Visual Studio Code, create a new file ( `New File` from the command pallette) and save the new file with a `.xbook` filename extension, e.g. `my-notebook.xbook`. The file will then be shown as an empty notebook.
 Notebook files are saved in Visual Studio Code in the usual way. For XPath Notebooks, output cells are not included in the notebook file.
@@ -50,7 +58,7 @@ Notebook files are saved in Visual Studio Code in the usual way. For XPath Noteb
 ![empty notebook](empty-notebook.png)
 
 
-## The XPath Evaluation Context
+## STEP 3: Setup the XPath Evaluation Context
 
 To set the evaluation context item for a notebook just open an XML or JSON file in Visual Studio Code.
 The context-item is the result of evaluating either [`doc($uri)`](https://www.w3.org/TR/xpath-functions-31/#func-doc) or 
@@ -69,13 +77,19 @@ Here is a summary of the evaluation context:
 | **Base URI** | the URI of the last opened file - if it was XML
 
 ---
-## Add and execute Notebook cells
+## STEP 4: Add and execute Notebook cells
 
 Press the '`+ Code`' or '`+ Markdown`' buttons to add Code or Markdown cells. To execute a cell, press `Ctrl-ENTER` on the keyboard or click on the 'execute' button alongside the cell. When a Code cell is executed the result is shown in the Output cell immediately below the current cell.
 
-For XPath Notebooks the default Output Cell type is JSON text. This allows XPath maps, arrays and sequences to be represented in an intuitive way. 
+For XPath Notebooks the default Output Cell type is JSON text. This allows XPath maps, arrays and sequences to be represented in an intuitive way.
 
-### Result node navigation
+## Step 5: Save the XPath Notebook when done
+
+Use the `CMD-S` keyboard shortcut to save an XPath Notebook so it can be used again. Currently, the Output cell details are not saved.
+
+# General Usage
+
+## Result node navigation
 
 If a result item is an XML node the XPath for the node is shown with special syntax highlighting. Result nodes can be navigated easily: first press and hold the `CMD` button and then click on the XPath in the output cell. The corresponding source XML document will be shown alongside the XPath Notebook, with the corresponding node highlighted.
 
@@ -132,9 +146,9 @@ Currently XPath Notebooks supports three output types:
 
 ## Evaluation
 
-The XPath Notebook uses the [NodeJS REPL](https://nodejs.org/api/repl.html#repl_the_node_js_repl) to execute XPath cells. The [Saxon-JS](https://www.npmjs.com/package/saxon-js) NPM module from [Saxonica](https://www.saxonica.com/saxon-js/documentation/index.html) is pre-installed with the extension.
+The XPath Notebook uses the [Node.js REPL](https://nodejs.org/api/repl.html#repl_the_node_js_repl) to execute XPath cells. The [Saxon-JS](https://www.npmjs.com/package/saxon-js) NPM module from [Saxonica](https://www.saxonica.com/saxon-js/documentation/index.html) is pre-installed with the extension.
 
-To evaluate an XPath expression the `SaxonJS.transform` function invoked via the NodeJS REPL. The XSLT used in the transorm is a compiled *SEF* file, the XPath expression and evaluation context are passed as XSLT parameters. 
+To evaluate an XPath expression the `SaxonJS.transform` function invoked via the Node.js REPL. The XSLT used in the transorm is a compiled *SEF* file, the XPath expression and evaluation context are passed as XSLT parameters. 
 
 Additional namespace bindings are added by the XSLT to the context node for '`array`', '`map`'... prefixes. The XSLT converts the result of an `xsl:evaluate` intruction to the XML representation for JSON by applying templates to the result. The `JSON XML` is then converted to JSON using the `xml-to-json` XPath function.
 
