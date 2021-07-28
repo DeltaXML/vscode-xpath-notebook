@@ -19,7 +19,7 @@
         "notebook"
     ],
     "engines": {
-        "vscode": "^1.57.0"
+        "vscode": "^1.58.2"
     },
     "categories": [
         "Programming Languages"
