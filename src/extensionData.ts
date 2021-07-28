@@ -51,6 +51,8 @@ export class ExtensionData {
 					break;
 				}
 			}
+			// to prevent renderer binding issue: close xbook file if it was open on activation:
+			vscode.commands.executeCommand('workbench.action.closeActiveEditor');	
 		}
 	}
 
