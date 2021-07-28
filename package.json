@@ -89,6 +89,6 @@
     "dependencies": {
         "rimraf": "^3.0.2",
         "jsonc-parser": "^3.0.0",
-        "saxon-js": "^2.0.3"
+        "saxon-js": "^2.2.0"
     }
 }
