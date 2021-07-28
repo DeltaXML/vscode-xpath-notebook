@@ -7,10 +7,17 @@ import { LinkProvider } from './linkProvider';
 import { XBookController } from './xbookController';
 import { XBookSerializer } from './xbookSerializer';
 import { XpathResultTokenProvider } from './xpathResultTokenProvider';
+import * as cp from 'child_process';
+
 
 export function activate(context: vscode.ExtensionContext) {
 	ExtensionData.extensionPath = context.extensionPath;
-
+	// prompt user to install Node.js - if not already installed
+	cp.exec('node -v', (error) => {
+		if (error) {
+			vscode.window.showWarningMessage("XPath Notebook requires a Node.js install from: https://nodejs.org/", "OK");
+		}
+	})
 
   context.subscriptions.push(
 		vscode.languages.registerDocumentSemanticTokensProvider({ language: 'json' }, new XpathResultTokenProvider(), XpathResultTokenProvider.getLegend()),
