@@ -17,39 +17,20 @@ export function activate(context: vscode.ExtensionContext) {
 		if (error) {
 			vscode.window.showWarningMessage("XPath Notebook requires a Node.js install from: https://nodejs.org/", "OK");
 		}
-	})
+	});
+
+	ExtensionData.initEditor(vscode.window.activeTextEditor);
 
   context.subscriptions.push(
 		vscode.languages.registerDocumentSemanticTokensProvider({ language: 'json' }, new XpathResultTokenProvider(), XpathResultTokenProvider.getLegend()),
 		//vscode.languages.registerDefinitionProvider({ language: 'javascript' }, new JsonDefinitionProvider()),
 		//vscode.languages.registerHoverProvider({ language: 'javascript' }, new JSONHoverProvider()),
 		vscode.window.onDidChangeActiveTextEditor(editor => {
-			ExtensionData.registerEditor(editor);
+				ExtensionData.registerEditor(editor);
 		}),
 		vscode.languages.registerDocumentLinkProvider({ language: 'json' }, new LinkProvider()),
 		vscode.notebooks.registerNotebookCellStatusBarItemProvider('xbook', new CellStatusProvider()),
     vscode.workspace.registerNotebookSerializer('xbook', new XBookSerializer()),
     new XBookController()
   );
-
-  const setActiveEditorUri = (editor: vscode.TextEditor | undefined) => {
-		const nbScheme = 'vscode-notebook-cell';
-		if (editor) {
-			if (editor.document.uri.scheme !== nbScheme) {
-				ExtensionData.lastEditorUri = editor.document.uri.toString();
-				ExtensionData.setBaseUri(editor.document.uri);
-			}
-		} else if (!ExtensionData.lastEditorUri && vscode.workspace.textDocuments.length > 0) {
-			const documents = vscode.workspace.textDocuments;
-			for (let i = documents.length; i--; i > -1) {
-				const document = documents[i];
-				if (document.uri.scheme !== nbScheme) {
-					ExtensionData.lastEditorUri = document.uri.toString();
-					ExtensionData.setBaseUri(document.uri);
-				}
-			}
-		}
-	};
-
-	setActiveEditorUri(vscode.window.activeTextEditor);
 }

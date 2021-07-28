@@ -8,10 +8,12 @@ export class ExtensionData {
 	static lastEditorUri: string | undefined;
 
 	static getSefPath() {
-		return path.join(ExtensionData.extensionPath, 'resources', 'xslt-sef', 'xpath-eval-to-json.sef.json' );
+		return path.join(ExtensionData.extensionPath, 'resources', 'xslt-sef', 'xpath-eval-to-json.sef.json');
 	}
-	private static baseUri: string|undefined;
-	private static staticBaseUri: string|undefined;
+	private static baseUri: string | undefined;
+	private static staticBaseUri: string | undefined;
+	private static nbScheme = 'vscode-notebook-cell';
+
 
 
 	static calcBaseUri(uri: vscode.Uri) {
@@ -37,10 +39,24 @@ export class ExtensionData {
 		}
 	}
 
+	static initEditor(editor: vscode.TextEditor | undefined) {
+		if (editor && editor.document.uri.scheme !== ExtensionData.nbScheme) {
+			ExtensionData.registerEditor(editor);
+		} else {
+			const editors = vscode.window.visibleTextEditors;
+			for (let index = 0; index < editors.length; index++) {
+				const currentEditor = editors[index];
+				if (currentEditor.document.uri.scheme !== ExtensionData.nbScheme) {
+					ExtensionData.registerEditor(editor);
+					break;
+				}
+			}
+		}
+	}
+
 	static registerEditor(editor: vscode.TextEditor | undefined) {
-		const nbScheme = 'vscode-notebook-cell';
 		if (editor) {
-			if (editor.document.uri.scheme !== nbScheme) {
+			if (editor.document.uri.scheme !== ExtensionData.nbScheme) {
 				ExtensionData.lastEditorUri = editor.document.uri.toString();
 				ExtensionData.setBaseUri(editor.document.uri);
 			} else {
@@ -61,4 +77,4 @@ export class ExtensionData {
 			return undefined;
 		}
 	}
-} 
+}

@@ -66,7 +66,11 @@ export class XBookController {
         //const jsonTextResult = JSON.stringify(resultObj, null, 4);
         const htmlString = HtmlTables.constructTableForObject(resultObj);
         const itemCount = Array.isArray(resultObj)? resultObj.length : 1;
-        const contextString = ExtensionData.lastEditorUri? path.basename(ExtensionData.lastEditorUri) : undefined;
+        let contextString: string | undefined;
+        if (ExtensionData.lastEditorUri) {
+          const fsPath = vscode.Uri.parse(ExtensionData.lastEditorUri).fsPath;
+          contextString = path.basename(fsPath);
+        }
         const metadata = {
           'xpathContext': contextString,
           'resultCount': itemCount,
