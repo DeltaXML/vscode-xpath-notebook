@@ -112,6 +112,7 @@ export class LinkProvider implements vscode.DocumentLinkProvider {
       const startPathPos = new vscode.Position(lineNum, pathStart + propNameOffset + 1);
       const endPathPos = new vscode.Position(lineNum, pathStart + propNameOffset + 1 + (nodePath.length - 1));
       const link = new vscode.DocumentLink(new vscode.Range(startPathPos, endPathPos), commandURI);
+      link.tooltip = 'Goto XPath'
       links.push(link);
     }
   }
