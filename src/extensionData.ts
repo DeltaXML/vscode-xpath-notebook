@@ -6,7 +6,6 @@ import * as jsc from 'jsonc-parser'
 export class ExtensionData {
 	static extensionPath: string = '';
 	static lastEditorUri: string | undefined;
-	static lastEditorUriObj: vscode.Uri | undefined;
 
 	static getSefPath() {
 		return path.join(ExtensionData.extensionPath, 'resources', 'xslt-sef', 'xpath-eval-to-json.sef.json' );
@@ -26,13 +25,6 @@ export class ExtensionData {
 		ExtensionData.baseUri = result;
 	}
 
-	static getLastEditorFileName() {
-		const fsPath = ExtensionData.lastEditorUriObj?.fsPath;
-		if (fsPath) {
-			return path.basename(fsPath);
-		}
-	}
-
 	static async getLastEditorText() {
 		if (this.lastEditorUri) {
 			return await vscode.workspace.fs.readFile(vscode.Uri.parse(this.lastEditorUri));
@@ -45,13 +37,11 @@ export class ExtensionData {
 		}
 	}
 
-
 	static registerEditor(editor: vscode.TextEditor | undefined) {
 		const nbScheme = 'vscode-notebook-cell';
 		if (editor) {
 			if (editor.document.uri.scheme !== nbScheme) {
 				ExtensionData.lastEditorUri = editor.document.uri.toString();
-				ExtensionData.lastEditorUriObj = editor.document.uri;
 				ExtensionData.setBaseUri(editor.document.uri);
 			} else {
 				const fixedUri = `file:///${editor.document.uri.path}`;

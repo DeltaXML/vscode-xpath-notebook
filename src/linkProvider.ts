@@ -52,7 +52,7 @@ export class LinkProvider implements vscode.DocumentLinkProvider {
     // if (!contextUriString) return links;
 
     // compromise!
-    const targetURI = ExtensionData.lastEditorUriObj;
+    const targetURI = ExtensionData.lastEditorUri? vscode.Uri.parse(ExtensionData.lastEditorUri) : undefined;
 
     if (!targetURI) return links;
 

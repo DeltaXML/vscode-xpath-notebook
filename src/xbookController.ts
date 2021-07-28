@@ -2,6 +2,8 @@ import * as vscode from 'vscode';
 import { HtmlTables } from './htmlTables';
 import { NodeKernel } from './nodeKernel';
 import { ExtensionData } from './extensionData';
+import * as path from 'path';
+
 
 export class XBookController {
     readonly controllerId = 'xbook-id';
@@ -64,8 +66,9 @@ export class XBookController {
         //const jsonTextResult = JSON.stringify(resultObj, null, 4);
         const htmlString = HtmlTables.constructTableForObject(resultObj);
         const itemCount = Array.isArray(resultObj)? resultObj.length : 1;
+        const contextString = ExtensionData.lastEditorUri? path.basename(ExtensionData.lastEditorUri) : undefined;
         const metadata = {
-          'xpathContext': ExtensionData.getLastEditorFileName(),
+          'xpathContext': contextString,
           'resultCount': itemCount,
           'xpathContextUri': ExtensionData.lastEditorUri        
         };
