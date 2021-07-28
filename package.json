@@ -25,7 +25,8 @@
         "Programming Languages"
     ],
     "activationEvents": [
-        "onNotebook:xbook"
+        "onNotebook:xbook",
+        "workspaceContains:**/*.xbook"
     ],
     "license": "MIT",
     "main": "./out/extension.js",
