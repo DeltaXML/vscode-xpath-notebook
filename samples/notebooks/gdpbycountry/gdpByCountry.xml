@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<countries source="https://en.wikipedia.org/wiki/List_of_countries_by_GDP_(nominal)"> 
+  <country name="United States" subregion="North America" region="Americas">
+    <gdp-estimates>
+        <estimate year="2021" org="imf">22,675,271</estimate>
+        <estimate year="2020" org="un">22,675,271</estimate>
+        <estimate year="2020" org="worldbank">22,675,271</estimate>
+    </gdp-estimates>
+  </country>
+  <country name="China" subregion="Eastern Asia" region="Asia">
+    <gdp-estimates>
+        <estimate year="2021" org="imf">16,642,318</estimate>
+        <estimate year="2020" org="un">14,342,933</estimate>
+        <estimate year="2020" org="worldbank">14,722,731</estimate>
+    </gdp-estimates>
+  </country>
+  <country name="Japan" subregion="Eastern Asia" region="Asia">
+    <gdp-estimates>
+        <estimate year="2021" org="imf">5,378,136</estimate>
+        <estimate year="2020" org="un">5,082,465</estimate>
+        <estimate year="2019" org="worldbank">5,064,873</estimate>
+    </gdp-estimates>
+  </country>
+  <country name="Germany" subregion="Western Europe" region="Europe">
+    <gdp-estimates>
+        <estimate year="2021" org="imf">4,319,286</estimate>
+        <estimate year="2020" org="un">3,861,123</estimate>
+        <estimate year="2020" org="worldbank">3,806,060</estimate>
+    </gdp-estimates>
+  </country>
+  <country name="United Kingdom" subregion="Northern Europe" region="Europe">
+    <gdp-estimates>
+        <estimate year="2021" org="imf">3,124,650</estimate>
+        <estimate year="2020" org="un">2,826,441</estimate>
+        <estimate year="2020" org="worldbank">2,707,744</estimate>
+    </gdp-estimates>
+  </country>
+</countries>
