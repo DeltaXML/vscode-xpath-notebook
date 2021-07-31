@@ -8,7 +8,9 @@ export class ExtensionData {
 	static lastEditorUri: string | undefined;
 
 	static getSefPath() {
-		return path.join(ExtensionData.extensionPath, 'resources', 'xslt-sef', 'xpath-eval-to-json.sef.json');
+		const rawPath = path.join(ExtensionData.extensionPath, 'resources', 'xslt-sef', 'xpath-eval-to-json.sef.json');
+		const escapedSlashPath = rawPath.replace(/(\\)/g, '\\$1');
+		return escapedSlashPath;
 	}
 	private static baseUri: string | undefined;
 	private static staticBaseUri: string | undefined;
