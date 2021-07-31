@@ -13,6 +13,10 @@ export class CellStatusProvider implements vscode.NotebookCellStatusBarItemProvi
       fName = op.metadata['xpathContext'];
       const statusFname = fName? `Source: '${fName}'` : '(No evaluation context)' 
       const item = new vscode.NotebookCellStatusBarItem(statusFname, vscode.NotebookCellStatusBarAlignment.Right);
+      // TODO: add this command when available fix for: https://github.com/microsoft/vscode/issues/124529
+      //item.tooltip = "Select new source";
+      //item.command = { title: "title", command: "xp-notebook.setSource", arguments: [_cell]};
+
       items.push(item);
 
       const resultCount: number | undefined = op.metadata['resultCount'];

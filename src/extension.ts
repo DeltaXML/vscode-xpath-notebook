@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+import { window } from 'vscode';
 import { CellStatusProvider } from './cellStatusProvider';
 import { ExtensionData } from './extensionData';
 import { JsonDefinitionProvider } from './jsonDefinitionProvider';
@@ -10,6 +11,7 @@ import { XpathResultTokenProvider } from './xpathResultTokenProvider';
 import * as cp from 'child_process';
 
 
+
 export function activate(context: vscode.ExtensionContext) {
 	ExtensionData.extensionPath = context.extensionPath;
 	// prompt user to install Node.js - if not already installed.
@@ -18,6 +20,20 @@ export function activate(context: vscode.ExtensionContext) {
 			vscode.window.showWarningMessage("XPath Notebook requires a Node.js install from: https://nodejs.org/", "OK");
 		}
 	});
+
+	const xbookController = new XBookController();
+
+	async function setNotebookSource(cell: vscode.NotebookCell) {
+		const options: vscode.OpenDialogOptions = {
+			canSelectMany: false,
+			openLabel: "Set as source"
+		}
+		const result = await window.showOpenDialog(options);
+		if (result) {
+			ExtensionData.lastEditorUri = result.toString();
+			xbookController._doExecution(cell);
+		}
+	}
 
 	ExtensionData.initEditor(vscode.window.activeTextEditor);
 
@@ -31,7 +47,8 @@ export function activate(context: vscode.ExtensionContext) {
 		vscode.languages.registerDocumentLinkProvider({ language: 'json' }, new LinkProvider()),
 		vscode.notebooks.registerNotebookCellStatusBarItemProvider('xbook', new CellStatusProvider()),
 		vscode.workspace.registerNotebookSerializer('xbook', new XBookSerializer()),
-		new XBookController()
+		vscode.commands.registerCommand('xp-notebook.setSource', (...args) => setNotebookSource(args[0])),
+		xbookController
 	);
 }
 

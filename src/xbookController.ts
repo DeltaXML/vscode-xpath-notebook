@@ -46,7 +46,7 @@ export class XBookController {
       this.nodeKernel.stop();
     }
   
-    private async _doExecution(cell: vscode.NotebookCell): Promise<void> {
+    public async _doExecution(cell: vscode.NotebookCell): Promise<void> {
       const execution = this._controller.createNotebookCellExecution(cell);
       execution.executionOrder = ++this._executionOrder;
       execution.start(Date.now()); // Keep track of elapsed time to execute cell.
