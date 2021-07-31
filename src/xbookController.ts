@@ -61,21 +61,24 @@ export class XBookController {
         isSuccess = false;
       }
 
+      let contextString: string | undefined;
+      if (ExtensionData.lastEditorUri) {
+        const fsPath = vscode.Uri.parse(ExtensionData.lastEditorUri).fsPath;
+        contextString = path.basename(fsPath);
+      }
+
+      const metadata = {
+        'xpathContext': contextString,
+        'resultCount': 0,
+        'xpathContextUri': ExtensionData.lastEditorUri        
+      };
+
       if (isSuccess) {
         const resultObj = JSON.parse(result);
         //const jsonTextResult = JSON.stringify(resultObj, null, 4);
         const htmlString = HtmlTables.constructTableForObject(resultObj);
         const itemCount = Array.isArray(resultObj)? resultObj.length : 1;
-        let contextString: string | undefined;
-        if (ExtensionData.lastEditorUri) {
-          const fsPath = vscode.Uri.parse(ExtensionData.lastEditorUri).fsPath;
-          contextString = path.basename(fsPath);
-        }
-        const metadata = {
-          'xpathContext': contextString,
-          'resultCount': itemCount,
-          'xpathContextUri': ExtensionData.lastEditorUri        
-        };
+        metadata.resultCount = itemCount;
 
         execution.replaceOutput([
         new vscode.NotebookCellOutput([
@@ -88,7 +91,7 @@ export class XBookController {
         execution.replaceOutput([
           new vscode.NotebookCellOutput([
             vscode.NotebookCellOutputItem.text(result)
-          ])
+          ], metadata)
         ]);
       }
       execution.end(isSuccess, Date.now());
