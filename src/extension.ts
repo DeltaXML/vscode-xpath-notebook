@@ -5,7 +5,7 @@ import { ExtensionData } from './extensionData';
 import { JsonDefinitionProvider } from './jsonDefinitionProvider';
 import { JSONHoverProvider } from './jsonHoverProvider';
 import { LinkProvider } from './linkProvider';
-import { XBookController } from './xbookController';
+import { NotebookType, XBookController } from './xbookController';
 import { XBookSerializer } from './xbookSerializer';
 import { XpathResultTokenProvider } from './xpathResultTokenProvider';
 import * as cp from 'child_process';
@@ -21,7 +21,18 @@ export function activate(context: vscode.ExtensionContext) {
 		}
 	});
 
-	const xbookController = new XBookController();
+	const xbookController = new XBookController(NotebookType.xbook);
+	// TODO: support ipynb when it supports saving language-info for XPath etc.
+	//const ipynbController = new XBookController(NotebookType.ipynb);
+	// change package.json as follows:
+	/*
+    "activationEvents": [
+        "onNotebook:xbook",
+        "workspaceContains:**\/*.xbook",
+        "onNotebook:jupyter-notebook",
+        "workspaceContains:**\/*.ipynb"
+    ],
+	*/
 
 	async function setNotebookSource(cell: vscode.NotebookCell) {
 		const options: vscode.OpenDialogOptions = {
@@ -49,6 +60,8 @@ export function activate(context: vscode.ExtensionContext) {
 		vscode.workspace.registerNotebookSerializer('xbook', new XBookSerializer()),
 		vscode.commands.registerCommand('xp-notebook.setSource', (...args) => setNotebookSource(args[0])),
 		xbookController
+		// TODO: see above
+		//ipynbController
 	);
 }
 

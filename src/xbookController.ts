@@ -4,22 +4,26 @@ import { NodeKernel } from './nodeKernel';
 import { ExtensionData } from './extensionData';
 import * as path from 'path';
 
+export enum NotebookType {
+  xbook = "xbook",
+  ipynb = "jupyter-notebook"
+}
+
 
 export class XBookController {
-    readonly controllerId = 'xbook-id';
-    readonly notebookType = 'xbook';
+    readonly controllerId: string = 'xbook-id';
+    readonly notebookType: NotebookType = NotebookType.xbook;
     readonly label = 'XPath Notebook';
     readonly supportedLanguages = ['xpath', 'javascript'];
     private readonly nodeKernel: NodeKernel;
-
   
     private readonly _controller: vscode.NotebookController;
     private _executionOrder = 0;
   
-    constructor() {
+    constructor(type: NotebookType) {
       this._controller = vscode.notebooks.createNotebookController(
-        this.controllerId,
-        this.notebookType,
+        this.controllerId = 'xpath:' + type,
+        this.notebookType = type,
         this.label
       );
   
