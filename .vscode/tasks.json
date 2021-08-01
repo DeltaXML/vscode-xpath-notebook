@@ -13,6 +13,20 @@
 				"kind": "build",
 				"isDefault": true
 			}
+		},
+		{
+			"type": "xslt-js",
+			"label": "TEST JSON TO XML",
+			"xsltFile": "resources/xslt/test-eval.xsl",
+			"xmlSource": "resources/xslt/test-eval.xsl",
+			"initialTemplate": "main",
+			"resultPath": "resources/xslt-out/eval-result.json",
+			"group": {
+				"kind": "build"
+			},
+			"problemMatcher": [
+				"$saxon-xslt-js"
+			]
 		}
 	]
 }

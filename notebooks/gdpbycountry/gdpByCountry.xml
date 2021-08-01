@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<countries source="https://en.wikipedia.org/wiki/List_of_countries_by_GDP_(nominal)"> 
+<countries xmlns:new="com.new" xmlns="com.countries.deltaxml" source="https://en.wikipedia.org/wiki/List_of_countries_by_GDP_(nominal)"> 
   <country name="United States" subregion="North America" region="Americas">
     <gdp-estimates>
         <estimate year="2021" org="imf">22,675,271</estimate>
@@ -7,6 +7,7 @@
         <estimate year="2020" org="worldbank">22,675,271</estimate>
     </gdp-estimates>
   </country>
+  <new:test/>
   <country name="China" subregion="Eastern Asia" region="Asia">
     <gdp-estimates>
         <estimate year="2021" org="imf">16,642,318</estimate>

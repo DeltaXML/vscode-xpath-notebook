@@ -13,9 +13,8 @@
   <xsl:output method="text" indent="no"/>
   <xsl:mode on-no-match="shallow-copy"/>
   
-  <xsl:param name="expression" as="xs:string"/>
-  <xsl:param name="sourceURI" as="xs:string?"/>
-  <xsl:param name="this" as="item()"/>
+  <xsl:param name="expression" as="xs:string" select="'map{ ''node'': /empty}'"/>
+  <xsl:param name="sourceURI" as="xs:string?" select="'test.xml'"/>
   
   <xsl:variable name="source.xml" static="yes" as="xs:integer" select="1"/>
   <xsl:variable name="source.empty" static="yes" as="xs:integer" select="2"/>
@@ -26,16 +25,6 @@
   <xsl:variable name="singleQuoteCP" as="xs:integer" select="string-to-codepoints('''')[1]"/>
   <xsl:variable name="doubleQuoteCP" as="xs:integer" select="string-to-codepoints('&quot;')[1]"/>
   
-  <xsl:variable name="xpathVariableNames" select="ixsl:get($this, 'keys')"/>
-  <xsl:variable name="staticBaseURI" as="xs:string" select="ixsl:get($this, 'staticBaseURI')"/>
-  
-  <xsl:variable name="xpathVariableMap" as="map(*)">
-    <xsl:map>
-      <xsl:for-each select="$xpathVariableNames">
-        <xsl:map-entry key="QName('', .)" select="ixsl:call($this, 'getVariable', [.])"/>
-      </xsl:for-each>
-    </xsl:map>
-  </xsl:variable>
   
   <xsl:variable name="testedSourceURIParts" as="item()*" select="ext:testSourceURI()"/>
   <xsl:variable name="sourceType" as="xs:integer" select="$testedSourceURIParts[1]"/>
@@ -91,16 +80,9 @@
   
   <xsl:template name="main">
     <xsl:variable name="expressionParts" as="xs:string*" select="ext:extractPreamble($expression)"/>
-    <xsl:variable name="preamble" as="xs:string" select="$expressionParts[1]"/>
-    <xsl:variable name="preambleParts" as="xs:string*" select="tokenize($preamble, '\s*=\s*')"/>
-    <xsl:variable name="assignVarName" as="xs:string?" select="if (count($preambleParts) eq 2 and $preambleParts[1] eq 'variable') then $preambleParts[2] else ()"/>
     <xsl:variable name="cleanedExpression" as="xs:string" select="$expressionParts[2]"/>
     <xsl:variable name="result" as="item()*" select="ext:evaluate($sourceDoc, $cleanedExpression)"/>
-
-    <xsl:if test="$assignVarName">
-      <xsl:sequence select="ixsl:call($this, 'setVariable', [$assignVarName, $result])"/>
-    </xsl:if>
-    <xsl:sequence select="ixsl:call($this, 'setVariable', ['_', $result])"/>
+    
     <xsl:variable name="jsonXML" select="if (exists($result)) then ext:convertArrayEntry($result) else $emptyArrayXML"/>
     <xsl:sequence select="xml-to-json($jsonXML)"/>
   </xsl:template>
@@ -115,16 +97,12 @@
           xpath="$xpathText"
           context-item="$doc"
           namespace-context="$contextNsDoc"
-          with-params="$xpathVariableMap"
-          base-uri="{$staticBaseURI}"
           />
       </xsl:when>
       <xsl:otherwise>
         <xsl:evaluate 
           xpath="$xpathText"
           context-item="$doc"
-          with-params="$xpathVariableMap"
-          base-uri="{$staticBaseURI}"
           />
       </xsl:otherwise>
     </xsl:choose>
