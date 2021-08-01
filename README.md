@@ -5,7 +5,7 @@ Notebooks are primarily used in a Data Science context but are valuable also for
 
 # Beta Status
 
-This release (v0.0.2) of **XPath Notebook** is the first public Beta. The Visual Studio Code Notebooks API used by this extension is itself still at quite an early stage of development. Given this, you may experience some teething issues and may also have suggestions for features omitted in this early release. 
+This release (v0.0.4) of **XPath Notebook** is the first public Beta. The Visual Studio Code Notebooks API used by this extension is itself still at quite an early stage of development. Given this, you may experience some teething issues and may also have suggestions for features omitted in this early release. 
 
 Please report any issues/feature-requests in the usual way via the [project issues page](https://github.com/DeltaXML/vscode-xpath-notebook/issues).
 
@@ -158,6 +158,8 @@ Prior to evaluation, the XSLT separates any XPath Prolog from the expression. If
 # XPath Code Editing Features
 
 All XPath code editing features are provided by DeltaXML's companion [XSLT/XPath for Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=deltaxml.xslt-xpath) extension - installed automatically with the XPath Notebook extension.
+
+For documentation on XPath editing features, see the extensions documentation at: [Editing XSLT/XPath](https://deltaxml.github.io/vscode-xslt-xpath/editing-xslt.html)
 
 
 
