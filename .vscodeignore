@@ -10,3 +10,4 @@ tsconfig.json
 jest.config.js
 tslint.json
 *.vsix
+resources/xslt/**
