@@ -161,6 +161,10 @@ All XPath code editing features are provided by DeltaXML's companion [XSLT/XPath
 
 For documentation on XPath editing features, see the extensions documentation at: [Editing XSLT/XPath](https://deltaxml.github.io/vscode-xslt-xpath/editing-xslt.html)
 
+# XPath Notebook Samples
+
+- Introduction Notebook sample in the code repository at: [notebooks/introduction/xpath-notebook.xbook](https://github.com/DeltaXML/vscode-xpath-notebook/blob/main/notebooks/introduction/xpath-notebook.xbook)
+
 
 
 
