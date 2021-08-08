@@ -65,18 +65,6 @@ export function activate(context: vscode.ExtensionContext) {
 	);
 }
 
-async function closeXBooks() {
-	// attempt to close XBook as there's a renderer problem if it's still open 
-	// when restarting vscode
-	const editors = vscode.window.visibleTextEditors;
-	for (let index = 0; index < editors.length; index++) {
-		const editor = editors[index];
-		if (editor.document.uri.fsPath.endsWith('.xbook')) {
-			await vscode.window.showTextDocument(editor.document.uri, { preview: true, preserveFocus: false });
-			await vscode.commands.executeCommand('workbench.action.closeActiveEditor');				
-		}
-	}}
-
 export async function deactivate() {
 	// await closeXBooks();
 }
