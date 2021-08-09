@@ -1,7 +1,7 @@
 {
     "name": "xpath-notebook",
-    "displayName": "XPath 3.1 Notebook for Visual Studio Code",
-    "description": "Notebook for XPath 3.1",
+    "displayName": "XPath Notebook for Visual Studio Code",
+    "description": "Notebook for XPath 3.1 - for analysing XML or JSON",
     "version": "0.0.5",
     "publisher": "deltaxml",
     "icon": "xpath-notebook.png",
