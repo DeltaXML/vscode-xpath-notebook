@@ -1,15 +1,10 @@
 # XPath Notebook for Visual Studio Code
 
 **XPath Notebook** adds XPath 3.1's extensive JSON and XML analysis features to [Visual Studio Code's Notebooks](https://code.visualstudio.com/api/extension-guides/notebook). 
-Notebooks are primarily used in a Data Science context but are valuable also for code experimentation or learning. 
+Notebooks are used for data-analysis, code experimentation, tutorials or learning. 
 
-# Beta Status
 
-This release (v0.0.4) of **XPath Notebook** is the first public Beta. The Visual Studio Code Notebooks API used by this extension is itself still at quite an early stage of development. Given this, you may experience some teething issues and may also have suggestions for features omitted in this early release. 
-
-Please report any issues/feature-requests in the usual way via the [project issues page](https://github.com/DeltaXML/vscode-xpath-notebook/issues).
-
-![XPath Notebook screenshot](notebook-vscode-small.png)
+![XPath Notebook screenshot](xpath-notebook-small.png)
 # DeltaXML's XPath Notebook Features
 
 | Feature  | Details |
