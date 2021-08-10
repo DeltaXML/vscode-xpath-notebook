@@ -47,19 +47,19 @@ To evaluate XPath expressions, the XPath Notebook requires **Node.js** to be ins
 
 ## STEP 2: Create and save a new XPath Notebook
 
-In Visual Studio Code, create a new file ( `New File` from the command pallette) and save the new file with a `.xbook` filename extension, e.g. `my-notebook.xbook`. The file will then be shown as an empty notebook.
-Notebook files are saved in Visual Studio Code in the usual way. For XPath Notebooks, output cells are not included in the notebook file.
+Open the Visual Studio Code command palette (**⇧⌘P**),  and run the `New XPath Notebook` command. An untitled notebook with a markdown cell and a code cell will be shown, initially the file is untitled with a `.xbook` file extension. 
+
+Save the Notebook file in the usual way (*⌘S*), keeping the `.xbook` extension. *Note that XPath Notebook output cell values are not saved when the file is saved.*
 
 ![empty notebook](empty-notebook.png)
 
 
-## STEP 3: Setup the XPath Evaluation Context
+## STEP 3: Setup the XPath Source 
 
-To set the evaluation context item for a notebook just open an XML or JSON file in Visual Studio Code.
+To set the evaluation context file for a notebook just open an XML or JSON file in Visual Studio Code.
+
 The context-item is the result of evaluating either [`doc($uri)`](https://www.w3.org/TR/xpath-functions-31/#func-doc) or 
-[`json-doc($uri)`](https://www.w3.org/TR/xpath-functions-31/#func-json-doc) respectively on the last opened file (excluding notebook files).
-
-Here is a summary of the evaluation context:
+[`json-doc($uri)`](https://www.w3.org/TR/xpath-functions-31/#func-json-doc) respectively on the last opened file (excluding notebook files). Here is a summary of the evaluation context:
 
 | Definition  | Details |
 | ------- | ------- |
@@ -156,9 +156,21 @@ All XPath code editing features are provided by DeltaXML's companion [XSLT/XPath
 
 For documentation on XPath editing features, see the extensions documentation at: [Editing XSLT/XPath](https://deltaxml.github.io/vscode-xslt-xpath/editing-xslt.html)
 
+# Commands
+
+| Command  | Key-Binding | Details |
+| ------- | ------- | --------- |
+| New XPath Notebook | - |  Creates and opens an untitled notebook file
+| XML: Goto XPath | - | Initially shows current XPath at the text prompt  |
+| XML: Select current element | ⇧⌘0 | Includes start/end tags |
+| XML: Select parent element | ⇧⌘9 | Includes start/end tags |
+| XML: Select child element | ⇧⌘8 | Includes start/end tags |
+| XML: Select following element | ⇧⌘7 | Includes start/end tags |
+| XML: Select preceding element | ⇧⌘6 | Includes start/end tags |
+
 # XPath Notebook Samples
 
-- Introduction Notebook sample in the code repository at: [notebooks/introduction/xpath-notebook.xbook](https://github.com/DeltaXML/vscode-xpath-notebook/blob/main/notebooks/introduction/xpath-notebook.xbook)
+An Introduction Notebook sample in the code repository at: [notebooks/introduction/xpath-notebook.xbook](https://github.com/DeltaXML/vscode-xpath-notebook/blob/main/notebooks/introduction/xpath-notebook.xbook)
 
 
 
