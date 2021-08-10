@@ -62,7 +62,7 @@
         "commands": [
             {
                 "command": "xpath-notebook.newNotebook",
-                "title": "New XPath notebook"
+                "title": "New XPath Notebook"
             }
         ]
     },
