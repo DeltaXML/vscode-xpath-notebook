@@ -28,7 +28,10 @@
     ],
     "activationEvents": [
         "onNotebook:xbook",
-        "workspaceContains:**/*.xbook"
+        "workspaceContains:**/*.xbook",
+        "onCommand:xpath-notebook.newNotebook",
+        "onLanguage:xml",
+        "onLanguage:xsl"
     ],
     "license": "MIT",
     "main": "./out/extension.js",
@@ -54,6 +57,12 @@
                         "filenamePattern": "*.xbook"
                     }
                 ]
+            }
+        ],
+        "commands": [
+            {
+                "command": "xpath-notebook.newNotebook",
+                "title": "New XPath notebook"
             }
         ]
     },

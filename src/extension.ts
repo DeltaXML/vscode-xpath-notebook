@@ -46,6 +46,29 @@ export function activate(context: vscode.ExtensionContext) {
 		}
 	}
 
+
+	const newNotebook = async () => {
+		const newNotebookContent = [
+			{
+				"kind": 1,
+				"languageId": "markdown",
+				"value": `# XPath Notebook\n${ExtensionData.currentFormattedDate()}`
+			},
+			{
+				"kind": 2,
+				"languageId": "xpath",
+				"value": ""
+			},
+		];
+	
+		const jsonNotebook = new vscode.NotebookData(newNotebookContent);
+		const notebook = await vscode.workspace.openNotebookDocument('xbook', jsonNotebook);
+		// TODO: uncomment once following is available
+		// await vscode.window.showNotebookDocument(notebook);
+		const nbURI = notebook.uri;
+		vscode.commands.executeCommand('vscode.open', nbURI);
+	}
+
 	ExtensionData.initEditor(vscode.window.activeTextEditor);
 
 	context.subscriptions.push(
@@ -58,7 +81,8 @@ export function activate(context: vscode.ExtensionContext) {
 		vscode.languages.registerDocumentLinkProvider({ language: 'json' }, new LinkProvider()),
 		vscode.notebooks.registerNotebookCellStatusBarItemProvider('xbook', new CellStatusProvider()),
 		vscode.workspace.registerNotebookSerializer('xbook', new XBookSerializer()),
-		vscode.commands.registerCommand('xp-notebook.setSource', (...args) => setNotebookSource(args[0])),
+		vscode.commands.registerCommand('xpath-notebook.setSource', (...args) => setNotebookSource(args[0])),
+		vscode.commands.registerCommand('xpath-notebook.newNotebook', newNotebook),
 		xbookController
 		// TODO: see above
 		//ipynbController

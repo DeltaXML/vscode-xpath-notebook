@@ -41,6 +41,26 @@ export class ExtensionData {
 		}
 	}
 
+	static currentFormattedDate() {
+    const dateObj = new Date();
+
+    const YYYY = dateObj.getFullYear();
+    // when calling getMonth, January is 0
+    const MM = ExtensionData.padNumber(dateObj.getMonth() + 1);
+    const DD = ExtensionData.padNumber(dateObj.getDate());
+
+    const hh = ExtensionData.padNumber(dateObj.getHours());
+    const mm = ExtensionData.padNumber(dateObj.getMinutes());
+    const ss = ExtensionData.padNumber(dateObj.getSeconds());
+
+
+    return `Date: ${YYYY}-${MM}-${DD}\xa0\xa0\xa0\xa0\xa0Time: ${hh}:${mm}:${ss}`;
+}
+
+  static padNumber(number: number) {
+	return number < 10 ? `0${number}` : number;
+}
+
 	static initEditor(editor: vscode.TextEditor | undefined) {
 		if (editor && editor.document.uri.scheme !== ExtensionData.nbScheme) {
 			ExtensionData.registerEditor(editor);
