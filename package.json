@@ -29,6 +29,7 @@
     "activationEvents": [
         "onNotebook:xbook",
         "workspaceContains:**/*.xbook",
+        "workspaceContains:**\/*.ipynb",
         "onCommand:xpath-notebook.newNotebook",
         "onLanguage:xml",
         "onLanguage:xsl"

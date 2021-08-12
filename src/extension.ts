@@ -23,7 +23,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 	const xbookController = new XBookController(NotebookType.xbook);
 	// TODO: support ipynb when it supports saving language-info for XPath etc.
-	//const ipynbController = new XBookController(NotebookType.ipynb);
+	const ipynbController = new XBookController(NotebookType.ipynb);
 	// change package.json as follows:
 	/*
     "activationEvents": [
@@ -83,9 +83,9 @@ export function activate(context: vscode.ExtensionContext) {
 		vscode.workspace.registerNotebookSerializer('xbook', new XBookSerializer()),
 		vscode.commands.registerCommand('xpath-notebook.setSource', (...args) => setNotebookSource(args[0])),
 		vscode.commands.registerCommand('xpath-notebook.newNotebook', newNotebook),
-		xbookController
+		xbookController,
 		// TODO: see above
-		//ipynbController
+		ipynbController
 	);
 }
 
