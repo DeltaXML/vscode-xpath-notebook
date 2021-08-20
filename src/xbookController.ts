@@ -60,7 +60,7 @@ export class XBookController {
       let result = '';
       try {
         result = await this.nodeKernel.eval(cell);
-      } catch (error) {
+      } catch (error: any) {
         result = error;
         isSuccess = false;
       }

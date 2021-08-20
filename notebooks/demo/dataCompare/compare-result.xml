@@ -1,0 +1,29 @@
+<contacts xmlns:deltaxml="http://www.deltaxml.com/ns/well-formed-delta-v1"
+          deltaxml:deltaV2="A!=B" deltaxml:version="2.0" deltaxml:content-type="full-context">
+  <person deltaxml:deltaV2="A!=B" deltaxml:original-position="A=2, B=1">
+    <first-Name deltaxml:deltaV2="A=B">Betty</first-Name>
+    <last-Name deltaxml:deltaV2="A=B">Alpha</last-Name>
+    <address deltaxml:deltaV2="A!=B" type="home">
+      <postcode deltaxml:deltaV2="A!=B">
+        <deltaxml:textGroup deltaxml:deltaV2="A!=B">
+          <deltaxml:text deltaxml:deltaV2="A">WR18 4GU</deltaxml:text>
+          <deltaxml:text deltaxml:deltaV2="B">B92 6DC</deltaxml:text>
+        </deltaxml:textGroup>
+      </postcode>
+    </address>
+    <occupation deltaxml:deltaV2="A=B">Engineer</occupation>
+  </person>
+  <person deltaxml:deltaV2="A!=B" deltaxml:original-position="A=1, B=2">
+    <first-Name deltaxml:deltaV2="A=B">Alan</first-Name>
+    <last-Name deltaxml:deltaV2="A=B">Alpha</last-Name>
+    <address deltaxml:deltaV2="A!=B" type="home">
+      <postcode deltaxml:deltaV2="A!=B">
+        <deltaxml:textGroup deltaxml:deltaV2="A!=B">
+          <deltaxml:text deltaxml:deltaV2="A">B92 6DC</deltaxml:text>
+          <deltaxml:text deltaxml:deltaV2="B">CR12 4QN</deltaxml:text>
+        </deltaxml:textGroup>
+      </postcode>
+    </address>
+    <occupation deltaxml:deltaV2="A=B">Train Driver</occupation>
+  </person>
+</contacts>
