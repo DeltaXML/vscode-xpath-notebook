@@ -10,7 +10,7 @@ export class LinkProvider implements vscode.DocumentLinkProvider {
 
   /*
 {
-    "allNoes": [
+    "allNodes": [
         " /books[1]/book[1]/@author",
         " /books[1]/new:book[1]/@author"
     ],
@@ -24,32 +24,7 @@ export class LinkProvider implements vscode.DocumentLinkProvider {
 
     const stack: LineType[] = [];
     const lines = document.getText().split(/\r?\n/);
-    // need to get uri from the output for the current active cell
-    // at the moment there's no way to do this
-    // following line is only in the proposed API:
-    // const activeNotebook = vscode.window.activeTextEditor;
-    // let activeCell: vscode.NotebookCell | undefined;
-    // if (activeNotebook) {
-    //   const activeCellSelections = activeNotebook.selections;
-    //   if (activeCellSelections.length > 0) {
-    //     const cellSelection = activeCellSelections[0];
-    //     const cells = activeNotebook.document.getCells(cellSelection);
-    //     if (cells.length > 0) {
-    //       activeCell = cells[0];
-    //     }
-    //   }
-    // }
-
-    // if (!activeCell) return links;
-    // const opLen = activeCell.outputs.length;
-    // const op = opLen > 0? activeCell.outputs[opLen - 1] : undefined;
-    // let contextUriString: string | undefined;
-
-    // if (op && op.metadata) {
-    //   contextUriString = op.metadata['xpathContextUri'];
-    // }
-
-    // if (!contextUriString) return links;
+    // TODO: ideally need to get uri from the output for the current active cell
 
     // compromise!
     const targetURI = ExtensionData.lastEditorUri? vscode.Uri.parse(ExtensionData.lastEditorUri) : undefined;
