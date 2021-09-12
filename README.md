@@ -1,7 +1,8 @@
 # XPath Notebook for Visual Studio Code
 
 **XPath Notebook** adds XPath 3.1's extensive JSON and XML analysis features to [Visual Studio Code's Notebooks](https://code.visualstudio.com/api/extension-guides/notebook). 
-Notebooks are used for data-analysis, code experimentation, tutorials or learning. 
+
+Notebooks can be used for data-analysis, code experimentation, tutorials or learning. 
 
 
 ![XPath Notebook screenshot](xpath-notebook-small.png)
@@ -15,7 +16,7 @@ Notebooks are used for data-analysis, code experimentation, tutorials or learnin
 | **Syntax Highlighting**   | Fast and precise - using [Semantic Highlighting](https://code.visualstudio.com/api/language-extensions/semantic-highlight-guide) exclusively
 | **Code Formatting**       | For multi-line XPath expressions, 'as-you-type' or 'on-save'
 | **Code Diagnostics**      | For XPath Syntax, variable/param references, functions, namespace-prefixes etc.
-| **Auto-Completion**       | For XPath functions, variables, function-parameters etc. 
+| **Auto-Completion**       | For XPath node-names, functions, variables, function-parameters etc. 
 | **Color Theme Support**   | Tested with most popular color themes ([Semantic Highlighting]() must be enabled in settings) 
 | **Evaluation Context**   | Sets context item, namespace context, context variables, last result variable
 | **Code Folding**          | The indentation of XPath expressions is used to determine fold regions
