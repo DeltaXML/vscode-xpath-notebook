@@ -60,6 +60,18 @@ export class XBookController {
       let result = '';
       try {
         result = await this.nodeKernel.eval(cell);
+        const { prolog, main } = XBookController.separatePrologFromXPath(cell.document.getText());
+        if (prolog && main) {
+          const parts = prolog.split('=');
+          if (parts.length === 2) {
+            if (parts[0].trim() === 'variable')
+            try {
+            vscode.commands.executeCommand('xslt-xpath.setExtensionXPathVariable', parts[1].trim(), main);
+            } catch {
+              // do nothing if command fails - poss due to dated XSLT/XPath extension
+            }
+          }
+        }
       } catch (error: any) {
         result = error;
         isSuccess = false;
@@ -99,6 +111,29 @@ export class XBookController {
         ]);
       }
       execution.end(isSuccess, Date.now());
+    }
+
+    private static separatePrologFromXPath(text: string) {
+      const percentPos = text.indexOf('%');
+      let prolog: string|undefined;
+      let main: string|undefined;
+      if (percentPos !== -1) {
+        const singlePos = text.indexOf('\'');
+        const doublePos = text.indexOf('\"');
+        let minpos = percentPos;
+        if (singlePos !== -1 && doublePos !== -1) {
+          minpos = Math.min(percentPos, singlePos, doublePos);
+        } else if (singlePos !== -1 ) {
+          minpos = Math.min(percentPos, singlePos);
+        } else if (doublePos !== -1 ) {
+          minpos = Math.min(percentPos, doublePos);
+        }
+        if (percentPos === minpos) {
+          prolog = text.substring(0, percentPos);
+          main = text.substring(percentPos + 1);
+        }
+      } 
+      return { prolog, main}
     }
 
     public dispose() {
