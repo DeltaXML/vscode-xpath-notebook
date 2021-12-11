@@ -1,6 +1,6 @@
 # XPath Notebook for Visual Studio Code
 
-**XPath Notebook** adds XPath 3.1's extensive JSON and XML analysis features to [Visual Studio Code's Notebooks](https://code.visualstudio.com/api/extension-guides/notebook). 
+**XPath Notebook** adds XPath 3.1's extensive JSON and XML analysis features to [Visual Studio Code's Notebooks](https://code.visualstudio.com/blogs/2021/11/08/custom-notebooks). 
 
 Notebooks can be used for data-analysis, code experimentation, tutorials or learning. 
 
