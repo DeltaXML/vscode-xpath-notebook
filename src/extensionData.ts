@@ -9,8 +9,8 @@ export class ExtensionData {
 
 	static getSefPath() {
 		const rawPath = path.join(ExtensionData.extensionPath, 'resources', 'xslt-sef', 'xpath-eval-to-json.sef.json');
-		const escapedSlashPath = rawPath.replace(/(\\)/g, '\\$1');
-		return escapedSlashPath;
+		const uri = vscode.Uri.file( rawPath );
+		return uri.toString();
 	}
 	private static baseUri: string | undefined;
 	private static staticBaseUri: string | undefined;
