@@ -14,6 +14,7 @@ import * as cp from 'child_process';
 
 export function activate(context: vscode.ExtensionContext) {
 	ExtensionData.extensionPath = context.extensionPath;
+	ExtensionData.extensionURI = context.extensionUri;
 	// prompt user to install Node.js - if not already installed.
 	cp.exec('node -v', (error) => {
 		if (error) {

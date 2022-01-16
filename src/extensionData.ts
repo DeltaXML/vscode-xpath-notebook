@@ -5,12 +5,12 @@ import * as jsc from 'jsonc-parser'
 
 export class ExtensionData {
 	static extensionPath: string = '';
+	static extensionURI: vscode.Uri | undefined;
 	static lastEditorUri: string | undefined;
 
 	static getSefPath() {
-		const rawPath = path.join(ExtensionData.extensionPath, 'resources', 'xslt-sef', 'xpath-eval-to-json.sef.json');
-		const escapedSlashPath = rawPath.replace(/(\\)/g, '\\$1');
-		return escapedSlashPath;
+		const sefURI = vscode.Uri.joinPath(ExtensionData.extensionURI!, 'resources', 'xslt-sef', 'xpath-eval-to-json.sef.json');
+		return sefURI;
 	}
 	private static baseUri: string | undefined;
 	private static staticBaseUri: string | undefined;
