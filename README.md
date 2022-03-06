@@ -24,7 +24,7 @@ Notebooks can be used for data-analysis, code experimentation, tutorials or lear
 | **Last Result Variable**        | Use `$_` to reference the last evaluated notebook cell result
 | **Bracket Matching**      | For `()`, `{}`, and `[]`
 | **Hover assistance**      | Shows tooltips. Providing signatures and descriptions for all built-in XSLT and XPath
-| **JSON output** | View Cell output with the JSON syntax (suitable for 3rd-party renderers) - mime-type: `application/json`
+| **JSON output** | View Cell output with the JSON syntax (suitable for 3rd-party renderers) - mime-type: `text/x-json`
 | **Table output** | View Cell output as a simple table - mime-type: `text/html`
 | **XML Node navigation** | Navigates to and highlights XML result nodes in the source document
 |||
@@ -127,7 +127,7 @@ Currently XPath Notebooks supports two output types:
 | Mime-type  | Details |
 | ------- | ------- |
 | **text/html** | suitable for small data-sets (< 1MB) shows results in tabular form
-| **application/json** | for JSON text view or advanced rendering from 3rd party VS Code extensions such as [RandomFractal's VSCode Data Table](https://github.com/RandomFractals/vscode-data-table) 
+| **text/x-json** | for JSON text view or advanced rendering from 3rd party VS Code extensions such as [RandomFractal's VSCode Data Table](https://github.com/RandomFractals/vscode-data-table) 
 
 > **Note**: RandomFractals Data Table renderer supports large data sets and provides column sort and data-type formatting.
 
