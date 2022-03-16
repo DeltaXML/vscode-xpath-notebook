@@ -61,13 +61,11 @@ export function activate(context: vscode.ExtensionContext) {
 				"value": ""
 			},
 		];
-	
 		const jsonNotebook = new vscode.NotebookData(newNotebookContent);
 		const notebook = await vscode.workspace.openNotebookDocument('xbook', jsonNotebook);
 		// TODO: uncomment once following is available
-		// await vscode.window.showNotebookDocument(notebook);
-		const nbURI = notebook.uri;
-		vscode.commands.executeCommand('vscode.open', nbURI);
+		//await vscode.window.showNotebookDocument(notebook);
+		//vscode.commands.executeCommand('vscode.open', notebook.uri);
 	}
 
 	ExtensionData.initEditor(vscode.window.activeTextEditor);
