@@ -1,7 +1,13 @@
+import { Uri } from "vscode";
+import { VSCodeEvent } from "vscode-notebook-renderer/events";
+import { ExtensionData } from "./extensionData";
+
 export class HtmlTables {
 
     private static ampRegex = /&/g;
     private static ltRegex = /</g;
+    private static xpathPrefix = ' ';
+    private static targetURI: Uri | undefined;
 
     public static constructTableForObject(obj: any) {
         if (typeof obj === 'object') {
@@ -17,8 +23,8 @@ export class HtmlTables {
 
     private static constructTableForArray(array: Array<any>) {
         const tags: string[] = [];
+        HtmlTables.targetURI = ExtensionData.lastEditorUri? Uri.parse(ExtensionData.lastEditorUri) : undefined;
         tags.push('<table><tbody>');
-        // tags.push(`<tr><td><a href="command:xslt-xpath.selectXPath?${encodeURIComponent('/authors[1]/author[1]')}">/authors[1]/authors</a></td></tr>`);
         array.forEach((item, index) => {
             if (index === 0 && typeof item === 'object' && !Array.isArray(item)) {
                 tags.push('<thead><tr>');
@@ -67,7 +73,15 @@ export class HtmlTables {
 
     private static escape(obj: any) {
         if (typeof obj === 'string') {
-            return obj.replace(this.ampRegex, '&amp;').replace(this.ltRegex, '&lt;');
+            const str = <string>obj;
+            if (HtmlTables.targetURI && str.startsWith(this.xpathPrefix)) {
+                let nodePath = str.substring(1);
+                const args = { xpath: nodePath, uri: HtmlTables.targetURI.toString() }
+                const argsString = encodeURIComponent(JSON.stringify(args));
+                return `<a href="command:xslt-xpath.selectXPathInDocument?${argsString}">${nodePath}</a>`
+            } else {
+                return obj.replace(this.ampRegex, '&amp;').replace(this.ltRegex, '&lt;');
+            }
         } else {
             return JSON.stringify(obj).replace(this.ampRegex, '&amp;').replace(this.ltRegex, '&lt;');
         }
