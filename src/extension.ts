@@ -65,15 +65,13 @@ export function activate(context: vscode.ExtensionContext) {
 		const notebook = await vscode.workspace.openNotebookDocument('xbook', jsonNotebook);
 		// TODO: uncomment once following is available
 		//await vscode.window.showNotebookDocument(notebook);
-		//vscode.commands.executeCommand('vscode.open', notebook.uri);
+		vscode.commands.executeCommand('vscode.open', notebook.uri);
 	}
 
 	ExtensionData.initEditor(vscode.window.activeTextEditor);
 
 	context.subscriptions.push(
 		vscode.languages.registerDocumentSemanticTokensProvider({ language: 'json' }, new XpathResultTokenProvider(), XpathResultTokenProvider.getLegend()),
-		//vscode.languages.registerDefinitionProvider({ language: 'javascript' }, new JsonDefinitionProvider()),
-		//vscode.languages.registerHoverProvider({ language: 'javascript' }, new JSONHoverProvider()),
 		vscode.window.onDidChangeActiveTextEditor(editor => {
 			ExtensionData.registerEditor(editor);
 		}),
