@@ -78,7 +78,8 @@ export class HtmlTables {
                 let nodePath = str.substring(1);
                 const args = { xpath: nodePath, uri: HtmlTables.targetURI.toString() }
                 const argsString = encodeURIComponent(JSON.stringify(args));
-                return `<a href="command:xslt-xpath.selectXPathInDocument?${argsString}">${nodePath}</a>`
+                const style = `text-decoration:none;`;
+                return `<a style="${style}" href="command:xslt-xpath.selectXPathInDocument?${argsString}">${nodePath}</a>`
             } else {
                 return obj.replace(this.ampRegex, '&amp;').replace(this.ltRegex, '&lt;');
             }
