@@ -99,8 +99,8 @@ export class XBookController {
         execution.replaceOutput([
         new vscode.NotebookCellOutput([
           // vscode.NotebookCellOutputItem.text(jsonTextResult, 'text/x-javascript'),
+          vscode.NotebookCellOutputItem.text(htmlString, 'text/html'),
           vscode.NotebookCellOutputItem.json(resultObj, 'application/json'),
-          vscode.NotebookCellOutputItem.text(htmlString, 'text/html')
         ], metadata)
       ]);
       } else {

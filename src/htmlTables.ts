@@ -10,6 +10,7 @@ export class HtmlTables {
     private static targetURI: Uri | undefined;
 
     public static constructTableForObject(obj: any) {
+        HtmlTables.targetURI = ExtensionData.lastEditorUri? Uri.parse(ExtensionData.lastEditorUri) : undefined;
         if (typeof obj === 'object') {
             if (Array.isArray(obj)) {
                 return this.constructTableForArray(obj);
@@ -23,7 +24,6 @@ export class HtmlTables {
 
     private static constructTableForArray(array: Array<any>) {
         const tags: string[] = [];
-        HtmlTables.targetURI = ExtensionData.lastEditorUri? Uri.parse(ExtensionData.lastEditorUri) : undefined;
         tags.push('<table><tbody>');
         array.forEach((item, index) => {
             if (index === 0 && typeof item === 'object' && !Array.isArray(item)) {
