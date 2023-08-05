@@ -48,6 +48,14 @@
         }
     },
     "contributes": {
+        "menus": {
+            "explorer/context": [
+                {
+                    "command": "xpath-notebook.newNotebook",
+                    "when": "resourceLangId == xslt"
+                }
+            ]
+        },
         "notebooks": [
             {
                 "id": "xbook",
