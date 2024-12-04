@@ -101,6 +101,7 @@ export class XBookController {
           // vscode.NotebookCellOutputItem.text(jsonTextResult, 'text/x-javascript'),
           vscode.NotebookCellOutputItem.text(htmlString, 'text/html'),
           vscode.NotebookCellOutputItem.json(resultObj, 'application/json'),
+          vscode.NotebookCellOutputItem.json(resultObj, 'deltaxml.xpath-notebook/xpath-result'),
         ], metadata)
       ]);
       } else {

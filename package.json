@@ -68,6 +68,16 @@
                 ]
             }
         ],
+        "notebookRenderer": [
+            {
+                "id": "xbook-renderer",
+                "displayName": "XPath Result Renderer",
+                "mimeTypes": [
+                    "deltaxml.xpath-notebook/xpath-result"
+                ],
+                "entrypoint": "./out/xbookRenderer.js"
+            }
+        ],
         "commands": [
             {
                 "command": "xpath-notebook.newNotebook",
@@ -106,7 +116,6 @@
     },
     "dependencies": {
         "rimraf": "^3.0.2",
-        "jsonc-parser": "^3.0.0",
         "saxon-js": "^2.3.0"
     }
 }
