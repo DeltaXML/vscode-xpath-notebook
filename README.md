@@ -6,7 +6,7 @@ Notebooks can be used for data-analysis, code experimentation, tutorials or lear
 
 
 ![XPath Notebook screenshot](xpath-notebook-small.png)
-# DeltaXML's XPath Notebook Features
+# DeltaXignia's XPath Notebook Features
 
 | Feature  | Details |
 | ------- | ------- |
@@ -32,7 +32,7 @@ Notebooks can be used for data-analysis, code experimentation, tutorials or lear
 
 # Introduction
 
-DeltaXML's *XPath Notebook* extension adds comprehensive **XPath 3.1** support to Visual Studio Code's built-in notebooks. Visual Studio Code notebooks provide similar features to other popular notebook interfaces like the  [Juypter Notebook](https://jupyterlab.readthedocs.io/en/latest/user/notebook.html#notebook).
+DeltaXignia's *XPath Notebook* extension adds comprehensive **XPath 3.1** support to Visual Studio Code's built-in notebooks. Visual Studio Code notebooks provide similar features to other popular notebook interfaces like the  [Juypter Notebook](https://jupyterlab.readthedocs.io/en/latest/user/notebook.html#notebook).
 
 A notebook comprises a set of notebooks cells. These cells can either be **Markdown cells** for narrative content or **Code cells** for a specific programming language.
 
@@ -153,7 +153,7 @@ Prior to evaluation, the XSLT separates any XPath Prolog from the expression. If
 
 # XPath Code Editing Features
 
-All XPath code editing features are provided by DeltaXML's companion [XSLT/XPath for Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=deltaxml.xslt-xpath) extension - installed automatically with the XPath Notebook extension.
+All XPath code editing features are provided by DeltaXignia's companion [XSLT/XPath for Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=deltaxml.xslt-xpath) extension - installed automatically with the XPath Notebook extension.
 
 For documentation on XPath editing features, see the extensions documentation at: [Editing XSLT/XPath](https://deltaxml.github.io/vscode-xslt-xpath/editing-xslt.html)
 
